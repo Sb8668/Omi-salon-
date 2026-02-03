@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>OMI SALON | Premium Booking</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;font-family:'Poppins',sans-serif}
+body{
+  margin:0;
+  min-height:100vh;
+  background:linear-gradient(135deg,#0f0f0f,#1c1c1c);
+  color:#fff;
+}
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:20px;
+}
+.card{
+  background:rgba(255,255,255,0.05);
+  border-radius:20px;
+  padding:25px;
+  box-shadow:0 20px 50px rgba(0,0,0,0.5);
+}
+h1{
+  text-align:center;
+  letter-spacing:4px;
+  color:#c5a059;
+}
+.subtitle{
+  text-align:center;
+  color:#ccc;
+  margin-bottom:30px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:30px;
+}
+@media(max-width:768px){
+  .grid{grid-template-columns:1fr}
+}
+label{
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:2px;
+  color:#aaa;
+}
+input,select{
+  width:100%;
+  padding:14px;
+  border-radius:12px;
+  border:none;
+  outline:none;
+  margin-top:6px;
+  background:#111;
+  color:#fff;
+}
+button{
+  width:100%;
+  padding:16px;
+  margin-top:20px;
+  border:none;
+  border-radius:30px;
+  background:linear-gradient(135deg,#c5a059,#ffd36a);
+  color:#000;
+  font-weight:700;
+  letter-spacing:3px;
+  cursor:pointer;
+}
+button:hover{transform:scale(1.03)}
+.footer{
+  text-align:center;
+  margin-top:40px;
+  font-size:12px;
+  color:#aaa;
+}
+.note{
+  font-size:11px;
+  color:#bbb;
+  margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="card">
+    <h1>OMI SALON</h1>
+    <div class="subtitle">Luxury Grooming Experience</div>
+
+    <div class="grid">
+      <div>
+        <h3>Why Choose Us</h3>
+        <p>We don’t just give haircuts — we deliver a premium grooming experience with style, comfort and precision.</p>
+        <p><b>Location:</b> Alabad, Kolhapur</p>
+        <p><b>Owner:</b> Omkar Mane</p>
+        <p><b>Contact:</b> +91 91456 27957</p>
+      </div>
+
+      <div>
+        <h3>Book Appointment</h3>
+
+        <label>Full Name</label>
+        <input id="name" placeholder="Your Name"/>
+
+        <label>Mobile Number (with country code)</label>
+        <input id="phone" placeholder="919XXXXXXXXX"/>
+
+        <label>Service</label>
+        <select id="service">
+          <option>Hair Cut</option>
+          <option>Shaving</option>
+          <option>Hair + Beard</option>
+          <option>Facial</option>
+          <option>Massage</option>
+        </select>
+
+        <label>Date</label>
+        <input type="date" id="date"/>
+
+        <label>Time</label>
+        <input type="time" id="time"/>
+
+        <button onclick="book()">BOOK ON WHATSAPP</button>
+
+        <div class="note">
+          WhatsApp chat will open with message ready. Please tap <b>Send</b>.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Developed by <b>Sourabh</b> © 2026 OMI SALON
+  </div>
+</div>
+
+<script>
+const OWNER = "919145627957";
+
+function book(){
+  const name = document.getElementById("name").value;
+  const phone = document.getElementById("phone").value;
+  const service = document.getElementById("service").value;
+  const date = document.getElementById("date").value;
+  const time = document.getElementById("time").value;
+
+  if(!name || !phone || !date || !time){
+    alert("Please fill all details");
+    return;
+  }
+
+  const ownerMsg =
+`नमस्कार *OMI SALON* ✂️
+
+नाव: ${name}
+मोबाईल: ${phone}
+सेवा: ${service}
+तारीख: ${date}
+वेळ: ${time}
+
+कृपया booking confirm करा.`;
+
+  const customerMsg =
+`नमस्कार ${name},
+
+तुमची *OMI SALON* मध्ये appointment request पाठवली आहे.
+
+📅 ${date}
+⏰ ${time}
+✂️ ${service}
+
+लवकरच confirmation मिळेल.
+धन्यवाद!`;
+
+  window.open(`https://wa.me/${OWNER}?text=${encodeURIComponent(ownerMsg)}`,"_blank");
+
+  setTimeout(()=>{
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(customerMsg)}`,"_blank");
+  },800);
+}
+</script>
+
+</body>
+  </html>
