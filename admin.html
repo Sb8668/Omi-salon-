@@ -1,41 +1,76 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Admin – OMI SALON</title>
-<link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>OMI SALON | Admin Panel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<style>
+body{font-family:Poppins, sans-serif;background:#111;color:#fff;padding:20px;}
+h1{color:#C5A059;}
+table{width:100%;border-collapse:collapse;margin-top:20px;}
+th,td{border:1px solid rgba(255,255,255,.2);padding:8px;text-align:center;}
+button{padding:5px 10px;background:#C5A059;color:#000;border:none;border-radius:8px;cursor:pointer;}
+</style>
 </head>
 <body>
-
-<div class="container">
-<h2>Admin Dashboard</h2>
-<input type="password" id="pass" placeholder="Admin Password">
+<h1>OMI SALON Admin Panel</h1>
+<input type="password" id="pass" placeholder="Admin Password"/>
 <button onclick="login()">Login</button>
-
-<div id="panel" style="display:none">
-<input type="date" id="adate">
-<div id="list"></div>
-</div>
+<div id="dashboard" style="display:none;">
+  <h2>Bookings</h2>
+  <table id="bookingsTable">
+    <tr><th>Name</th><th>Phone</th><th>Service</th><th>Date</th><th>Time</th><th>Action</th></tr>
+  </table>
 </div>
 
 <script type="module">
-import { db, APP_ID } from './firebase.js';
-import { collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, doc, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-window.login=()=>{
- if(pass.value==="omi123"){
-  panel.style.display="block";
- }
+const firebaseConfig = {
+  apiKey: "तुझा API KEY",
+  authDomain: "तुझा PROJECT.firebaseapp.com",
+  projectId: "तुझा PROJECT ID"
 };
+const OWNER_NUMBER="919145627957";
+const APP_ID="omi-salon-gold-3d";
 
-adate.onchange=()=>{
- const q=collection(db,"artifacts",APP_ID,"public","data",`bookings_${adate.value}`);
- onSnapshot(q,snap=>{
-  list.innerHTML="";
-  snap.forEach(d=>{
-   list.innerHTML+=`<div class="card">${d.data().time} - ${d.data().name}</div>`;
-  })
- })
-};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+signInAnonymously(getAuth(app));
+
+function login(){
+  if(document.getElementById("pass").value==="omi123"){
+    document.getElementById("dashboard").style.display="block";
+  } else { alert("Wrong Password!"); }
+}
+
+function loadBookings(date=null){
+  const table=document.getElementById("bookingsTable");
+  table.innerHTML='<tr><th>Name</th><th>Phone</th><th>Service</th><th>Date</th><th>Time</th><th>Action</th></tr>';
+  let q = collection(db,"artifacts",APP_ID,"public","data",`bookings_${date||new Date().toISOString().split('T')[0]}`);
+  onSnapshot(q,snap=>{
+    snap.forEach(d=>{
+      const b=d.data();
+      let row=table.insertRow();
+      row.insertCell(0).innerText=b.name;
+      row.insertCell(1).innerText=b.phone;
+      row.insertCell(2).innerText=b.service;
+      row.insertCell(3).innerText=b.date;
+      row.insertCell(4).innerText=b.time;
+      let btn=document.createElement("button");
+      btn.innerText="Cancel";
+      btn.onclick=async ()=>{
+        await deleteDoc(doc(db,"artifacts",APP_ID,"public","data",`bookings_${b.date}`,b.time.replace(":","")));
+        alert("Booking Cancelled");
+      };
+      row.insertCell(5).appendChild(btn);
+    });
+  });
+}
+
+window.onload=()=>loadBookings();
 </script>
 </body>
 </html>
