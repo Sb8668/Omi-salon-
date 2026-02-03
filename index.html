@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="mr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>OMI SALON | Premium Booking</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OMI SALON | अपॉइंटमेंट बुकिंग</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
@@ -12,7 +12,7 @@
 body{
   margin:0;
   min-height:100vh;
-  background:linear-gradient(135deg,#0f0f0f,#1c1c1c);
+  background:linear-gradient(135deg,#0b0b0b,#1a1a1a);
   color:#fff;
 }
 .container{
@@ -22,14 +22,14 @@ body{
 }
 .card{
   background:rgba(255,255,255,0.05);
-  border-radius:20px;
-  padding:25px;
-  box-shadow:0 20px 50px rgba(0,0,0,0.5);
+  border-radius:22px;
+  padding:28px;
+  box-shadow:0 25px 60px rgba(0,0,0,0.6);
 }
 h1{
   text-align:center;
-  letter-spacing:4px;
   color:#c5a059;
+  letter-spacing:4px;
 }
 .subtitle{
   text-align:center;
@@ -46,8 +46,8 @@ h1{
 }
 label{
   font-size:12px;
-  text-transform:uppercase;
   letter-spacing:2px;
+  text-transform:uppercase;
   color:#aaa;
 }
 input,select{
@@ -63,26 +63,26 @@ input,select{
 button{
   width:100%;
   padding:16px;
-  margin-top:20px;
+  margin-top:22px;
   border:none;
-  border-radius:30px;
-  background:linear-gradient(135deg,#c5a059,#ffd36a);
+  border-radius:40px;
+  background:linear-gradient(135deg,#c5a059,#ffdd88);
   color:#000;
   font-weight:700;
   letter-spacing:3px;
   cursor:pointer;
 }
 button:hover{transform:scale(1.03)}
+.note{
+  font-size:11px;
+  color:#bbb;
+  margin-top:10px;
+}
 .footer{
   text-align:center;
   margin-top:40px;
   font-size:12px;
   color:#aaa;
-}
-.note{
-  font-size:11px;
-  color:#bbb;
-  margin-top:10px;
 }
 </style>
 </head>
@@ -91,48 +91,60 @@ button:hover{transform:scale(1.03)}
 
 <div class="container">
   <div class="card">
+
     <h1>OMI SALON</h1>
-    <div class="subtitle">Luxury Grooming Experience</div>
+    <div class="subtitle">
+      प्रीमियम हेअर & ग्रूमिंग अनुभव  
+      <br>🕙 सकाळी 10 ते रात्री 9 पर्यंत सुरू
+    </div>
 
     <div class="grid">
+
+      <!-- LEFT INFO -->
       <div>
-        <h3>Why Choose Us</h3>
-        <p>We don’t just give haircuts — we deliver a premium grooming experience with style, comfort and precision.</p>
-        <p><b>Location:</b> Alabad, Kolhapur</p>
-        <p><b>Owner:</b> Omkar Mane</p>
-        <p><b>Contact:</b> +91 91456 27957</p>
+        <h3>आमच्याबद्दल</h3>
+        <p>
+          आम्ही फक्त केस कापत नाही,  
+          तर तुम्हाला एक रॉयल आणि प्रीमियम अनुभव देतो.
+        </p>
+        <p><b>📍 ठिकाण:</b> अलाबाद, कोल्हापूर</p>
+        <p><b>👑 मालक:</b> ओंकार माने</p>
+        <p><b>📞 संपर्क:</b> +91 91456 27957</p>
+        <p><b>⏰ वेळ:</b> सकाळी 10 ते रात्री 9</p>
       </div>
 
+      <!-- BOOKING -->
       <div>
-        <h3>Book Appointment</h3>
+        <h3>अपॉइंटमेंट बुक करा</h3>
 
-        <label>Full Name</label>
-        <input id="name" placeholder="Your Name"/>
+        <label>पूर्ण नाव</label>
+        <input id="name" placeholder="तुमचे नाव">
 
-        <label>Mobile Number (with country code)</label>
-        <input id="phone" placeholder="919XXXXXXXXX"/>
+        <label>मोबाईल नंबर (91 सह)</label>
+        <input id="phone" placeholder="919XXXXXXXXX">
 
-        <label>Service</label>
+        <label>सेवा निवडा</label>
         <select id="service">
-          <option>Hair Cut</option>
-          <option>Shaving</option>
-          <option>Hair + Beard</option>
-          <option>Facial</option>
-          <option>Massage</option>
+          <option>केस कटिंग</option>
+          <option>दाढी (शेव्हिंग)</option>
+          <option>केस + दाढी</option>
+          <option>फेशियल</option>
+          <option>मसाज</option>
         </select>
 
-        <label>Date</label>
-        <input type="date" id="date"/>
+        <label>तारीख</label>
+        <input type="date" id="date">
 
-        <label>Time</label>
-        <input type="time" id="time"/>
+        <label>वेळ</label>
+        <input type="time" id="time">
 
-        <button onclick="book()">BOOK ON WHATSAPP</button>
+        <button onclick="bookNow()">BOOK APPOINTMENT</button>
 
         <div class="note">
-          WhatsApp chat will open with message ready. Please tap <b>Send</b>.
+          WhatsApp उघडेल. कृपया <b>Send</b> बटण दाबा.
         </div>
       </div>
+
     </div>
   </div>
 
@@ -144,46 +156,36 @@ button:hover{transform:scale(1.03)}
 <script>
 const OWNER = "919145627957";
 
-function book(){
-  const name = document.getElementById("name").value;
-  const phone = document.getElementById("phone").value;
+function bookNow(){
+  const name = document.getElementById("name").value.trim();
+  const phone = document.getElementById("phone").value.trim();
   const service = document.getElementById("service").value;
   const date = document.getElementById("date").value;
   const time = document.getElementById("time").value;
 
   if(!name || !phone || !date || !time){
-    alert("Please fill all details");
+    alert("कृपया सर्व माहिती भरा");
     return;
   }
 
-  const ownerMsg =
+  const msg = 
 `नमस्कार *OMI SALON* ✂️
 
-नाव: ${name}
-मोबाईल: ${phone}
-सेवा: ${service}
-तारीख: ${date}
-वेळ: ${time}
+मी अपॉइंटमेंट बुक केली आहे.
 
-कृपया booking confirm करा.`;
+👤 नाव: ${name}
+📞 मोबाईल: ${phone}
+✂️ सेवा: ${service}
+📅 तारीख: ${date}
+⏰ वेळ: ${time}
 
-  const customerMsg =
-`नमस्कार ${name},
+कृपया booking confirm करा.
+धन्यवाद 🙏`;
 
-तुमची *OMI SALON* मध्ये appointment request पाठवली आहे.
-
-📅 ${date}
-⏰ ${time}
-✂️ ${service}
-
-लवकरच confirmation मिळेल.
-धन्यवाद!`;
-
-  window.open(`https://wa.me/${OWNER}?text=${encodeURIComponent(ownerMsg)}`,"_blank");
-
-  setTimeout(()=>{
-    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(customerMsg)}`,"_blank");
-  },800);
+  window.open(
+    `https://wa.me/${OWNER}?text=${encodeURIComponent(msg)}`,
+    "_blank"
+  );
 }
 </script>
 
