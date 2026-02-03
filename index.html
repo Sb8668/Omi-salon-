@@ -2,10 +2,48 @@
 <html lang="mr">
 <head>
   <meta charset="UTF-8">
-  <title>OMI SALON</title>
+  <title>OMI SALON – Appointment Booking</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+<div class="container">
   <h1>OMI SALON</h1>
-  <p>Website live test successful ✅</p>
+  <p class="subtitle">अपॉइंटमेंट बुक करा</p>
+
+  <form id="bookingForm">
+    <input type="text" id="name" placeholder="तुमचं पूर्ण नाव" required>
+
+    <input type="tel" id="phone" placeholder="मोबाईल नंबर" required>
+
+    <select id="service" required>
+      <option value="">सेवा निवडा</option>
+      <option>Hair Cutting</option>
+      <option>Beard Shaving</option>
+      <option>Hair + Beard</option>
+      <option>Facial</option>
+      <option>Massage</option>
+    </select>
+
+    <input type="date" id="date" required>
+
+    <select id="time" required>
+      <option value="">वेळ निवडा</option>
+    </select>
+
+    <button type="submit">बुक करा</button>
+  </form>
+
+  <p id="status"></p>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
