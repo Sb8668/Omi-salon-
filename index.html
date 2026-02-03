@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OMI SALON | Premium Grooming</title>
-    <!-- Tailwind CSS for modern styling -->
+    <title>OMI SALON | Cloud Powered</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -21,7 +21,6 @@
             min-height: 100vh;
         }
         .gold-text { color: var(--gold); }
-        .gold-bg { background-color: var(--gold); }
         .glass {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(10px);
@@ -36,32 +35,32 @@
         .input-field:focus {
             border-color: var(--gold);
             outline: none;
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
         }
         .btn-primary {
             background: linear-gradient(135deg, #d4af37, #b8860b);
             color: #000;
             font-weight: 700;
-            transition: transform 0.2s, opacity 0.2s;
         }
-        .btn-primary:active { transform: scale(0.98); }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        
-        /* Custom scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        .loading-spinner {
+            border: 3px solid rgba(255,255,255,.1);
+            border-top: 3px solid var(--gold);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="pb-10">
 
-    <!-- Header Section -->
     <header class="py-8 text-center border-b border-white/10 glass mb-8">
         <h1 class="text-4xl font-bold tracking-widest gold-text uppercase">OMI SALON</h1>
-        <p class="text-gray-400 mt-2 flex items-center justify-center gap-2">
+        <p class="text-gray-400 mt-2 flex items-center justify-center gap-2 text-sm">
             <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-            सकाळी 9 ते रात्री 8 | ओमी सलून
+            Cloud Protected • कोल्हापूर
         </p>
     </header>
 
@@ -69,128 +68,126 @@
         
         <!-- Navigation Tabs -->
         <div class="flex gap-2 mb-6">
-            <button onclick="showTab('book-tab')" id="btn-book-tab" class="flex-1 py-3 rounded-lg font-semibold glass border-gold/50 text-gold">
+            <button onclick="showTab('book-tab')" id="btn-book-tab" class="flex-1 py-3 rounded-lg font-semibold glass border-gold/50 text-gold transition-all">
                 ✂️ बुकिंग
             </button>
-            <button onclick="showTab('admin-tab')" id="btn-admin-tab" class="flex-1 py-3 rounded-lg font-semibold glass text-gray-400">
+            <button onclick="showTab('admin-tab')" id="btn-admin-tab" class="flex-1 py-3 rounded-lg font-semibold glass text-gray-400 transition-all">
                 🔐 ॲडमिन
             </button>
         </div>
 
         <!-- BOOKING SECTION -->
-        <div id="book-tab" class="tab-content active animate-in fade-in duration-500">
+        <div id="book-tab" class="tab-content active">
             <div class="glass rounded-2xl p-6 shadow-2xl">
                 <h2 class="text-2xl font-bold mb-6 text-center">अपॉइंटमेंट बुक करा</h2>
                 
                 <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm text-gray-400 mb-1">पूर्ण नाव</label>
-                        <input id="userName" type="text" placeholder="उदा. सौरभ पाटील" class="w-full p-4 rounded-xl input-field">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm text-gray-400 mb-1">मोबाईल नंबर</label>
-                        <input id="userPhone" type="tel" placeholder="98XXXXXXXX" class="w-full p-4 rounded-xl input-field">
-                    </div>
+                    <input id="userName" type="text" placeholder="तुमचे पूर्ण नाव" class="w-full p-4 rounded-xl input-field">
+                    <input id="userPhone" type="tel" placeholder="मोबाईल नंबर (10 Digit)" class="w-full p-4 rounded-xl input-field">
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm text-gray-400 mb-1">सेवा निवडा</label>
-                            <select id="userSvc" class="w-full p-4 rounded-xl input-field appearance-none">
-                                <option value="">निवडा...</option>
-                                <option value="Hair Cut">Hair Cut (कटिंग)</option>
-                                <option value="Shaving">Shaving (दाढी)</option>
-                                <option value="Hair + Beard">Hair + Beard Combo</option>
-                                <option value="Facial/Massage">Facial / Massage</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm text-gray-400 mb-1">वेळ निवडा</label>
-                            <select id="userTime" class="w-full p-4 rounded-xl input-field">
-                                <!-- Slots injected by JS -->
-                            </select>
-                        </div>
+                        <select id="userSvc" class="w-full p-4 rounded-xl input-field">
+                            <option value="">सेवा निवडा...</option>
+                            <option value="Hair Cut">Hair Cut (कटिंग)</option>
+                            <option value="Shaving">Shaving (दाढी)</option>
+                            <option value="Combo">Hair + Beard Combo</option>
+                            <option value="Facial">Facial / Massage</option>
+                        </select>
+                        <select id="userTime" class="w-full p-4 rounded-xl input-field">
+                            <!-- Slots from Firebase -->
+                        </select>
                     </div>
 
-                    <button onclick="handleBooking()" class="w-full py-4 mt-4 rounded-xl btn-primary text-lg shadow-lg">
+                    <button id="bookBtn" onclick="handleBooking()" class="w-full py-4 mt-4 rounded-xl btn-primary text-lg shadow-lg flex items-center justify-center gap-2">
                         कन्फर्म करा (WhatsApp)
                     </button>
                 </div>
             </div>
-            
-            <div class="mt-8 text-center text-gray-500 text-sm">
-                <p>📍 कोल्हापूर, महाराष्ट्र</p>
-            </div>
         </div>
 
         <!-- ADMIN SECTION -->
-        <div id="admin-tab" class="tab-content animate-in fade-in duration-500">
-            <!-- Login State -->
+        <div id="admin-tab" class="tab-content">
             <div id="admin-login-ui" class="glass rounded-2xl p-6">
                 <h2 class="text-xl font-bold mb-4">ॲडमिन लॉगिन</h2>
-                <input id="passInput" type="password" placeholder="Password प्रविष्ट करा" class="w-full p-4 rounded-xl input-field mb-4">
+                <input id="passInput" type="password" placeholder="Password टाका" class="w-full p-4 rounded-xl input-field mb-4">
                 <button onclick="checkAdmin()" class="w-full py-3 rounded-xl bg-white/10 hover:bg-white/20 font-bold transition">
                     प्रवेश करा
                 </button>
             </div>
 
-            <!-- Dashboard State -->
             <div id="admin-dash-ui" class="hidden space-y-4">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-2xl font-bold gold-text">बुकिंग यादी</h2>
+                    <h2 class="text-2xl font-bold gold-text">आजची बुकिंग</h2>
                     <button onclick="logout()" class="text-xs text-red-400 underline">Logout</button>
                 </div>
-                
                 <div id="booking-list" class="space-y-3">
-                    <!-- Cards injected by JS -->
+                    <div class="flex justify-center py-10"><div class="loading-spinner"></div></div>
                 </div>
-                
-                <button onclick="clearHistory()" class="w-full py-2 text-gray-500 text-xs mt-10 hover:text-red-400 transition">
-                    Clear All Records
-                </button>
             </div>
         </div>
 
     </main>
 
-    <footer class="mt-12 text-center text-gray-600">
-        <p class="text-xs uppercase tracking-widest font-light">Design & Built by <span class="text-gray-400">Sourabh</span></p>
-        <p class="text-[10px] mt-1">© 2026 OMI SALON. All Rights Reserved.</p>
-    </footer>
+    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 glass px-6 py-3 rounded-full text-sm font-medium transition-all opacity-0 translate-y-10 pointer-events-none z-50"></div>
 
-    <!-- Notification Toast -->
-    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 glass px-6 py-3 rounded-full text-sm font-medium transition-all opacity-0 translate-y-10 pointer-events-none z-50">
-        Message here
-    </div>
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-    <script>
-        const OWNER_PHONE = "919145627957";
-        const ADMIN_PASS = "omi123";
+        // Firebase Configuration
+        const firebaseConfig = JSON.parse(__firebase_config);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'omi-salon-app';
 
-        // Tab Management
-        function showTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            
-            // UI Update for buttons
-            const isBook = tabId === 'book-tab';
-            document.getElementById('btn-book-tab').className = isBook ? 
-                'flex-1 py-3 rounded-lg font-semibold glass border-gold/50 text-gold' : 
-                'flex-1 py-3 rounded-lg font-semibold glass text-gray-400';
-            document.getElementById('btn-admin-tab').className = !isBook ? 
-                'flex-1 py-3 rounded-lg font-semibold glass border-gold/50 text-gold' : 
-                'flex-1 py-3 rounded-lg font-semibold glass text-gray-400';
+        let currentUser = null;
+        let allBookings = [];
+
+        // 1. Auth & Initial Load
+        async function init() {
+            try {
+                await signInAnonymously(auth);
+                onAuthStateChanged(auth, (user) => {
+                    currentUser = user;
+                    if (user) {
+                        listenToBookings();
+                    }
+                });
+            } catch (err) {
+                console.error("Auth Error", err);
+                showToast("Firebase connection failed");
+            }
         }
 
-        // Database (Local Storage)
-        function getDb() { return JSON.parse(localStorage.getItem("omi_bookings") || "[]"); }
-        function saveDb(data) { localStorage.setItem("omi_bookings", JSON.stringify(data)); }
+        // 2. Listen to Cloud Data
+        function listenToBookings() {
+            const publicPath = collection(db, 'artifacts', appId, 'public', 'data', 'bookings');
+            
+            // Simple query (No orderBy to avoid index requirement)
+            onSnapshot(publicPath, (snapshot) => {
+                allBookings = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                // Sort in JS instead of Firestore query
+                allBookings.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+                
+                updateTimeSlots();
+                if (document.getElementById("admin-dash-ui").classList.contains("active") || true) {
+                    renderAdminList();
+                }
+            }, (error) => {
+                console.error("Firestore Error", error);
+            });
+        }
 
-        // Load Time Slots
-        function updateSlots() {
+        // 3. UI logic
+        window.updateTimeSlots = () => {
             const select = document.getElementById("userTime");
+            if(!select) return;
             select.innerHTML = `<option value="">वेळ निवडा</option>`;
-            const bookedTimes = getDb().map(b => b.time);
+            
+            const bookedTimes = allBookings.map(b => b.time);
 
             for (let h = 9; h <= 19; h++) {
                 const timeStr = `${h}:00 ${h >= 12 ? 'PM' : 'AM'}`;
@@ -203,110 +200,105 @@
                 if (isBooked) opt.disabled = true;
                 select.appendChild(opt);
             }
-        }
+        };
 
-        // Booking Logic
-        function handleBooking() {
+        window.handleBooking = async () => {
+            if (!currentUser) return showToast("कनेक्शन सुरू होत आहे, थांबा...");
+
             const name = document.getElementById("userName").value.trim();
             const phone = document.getElementById("userPhone").value.trim();
             const svc = document.getElementById("userSvc").value;
             const time = document.getElementById("userTime").value;
 
-            if (!name || !phone || !svc || !time) {
-                showToast("कृपया सर्व माहिती भरा!");
-                return;
+            if (!name || phone.length < 10 || !svc || !time) {
+                return showToast("कृपया सर्व योग्य माहिती भरा!");
             }
 
-            const db = getDb();
-            const token = db.length + 101; // Start token from 101
-            const newBooking = { token, name, phone, svc, time, date: new Date().toLocaleDateString() };
-            
-            db.push(newBooking);
-            saveDb(db);
-            updateSlots();
+            const btn = document.getElementById("bookBtn");
+            btn.disabled = true;
+            btn.innerHTML = `<div class="loading-spinner"></div> सेव्ह होत आहे...`;
 
-            const waMsg = `*OMI SALON - NEW APPOINTMENT*%0A%0A👤 नाव: ${name}%0A📞 मोबाईल: ${phone}%0A💈 सेवा: ${svc}%0A⏰ वेळ: ${time}%0A🎟️ टोकन: #${token}%0A%0A_कृपया माझी वेळ कन्फर्म करा._`;
-            
-            showToast("Redirecting to WhatsApp...");
-            setTimeout(() => {
-                window.location.href = `https://wa.me/${OWNER_PHONE}?text=${waMsg}`;
-            }, 1000);
-        }
+            try {
+                const token = Math.floor(Math.random() * 900) + 100;
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'bookings'), {
+                    name, phone, svc, time, token,
+                    createdAt: serverTimestamp(),
+                    userId: currentUser.uid
+                });
 
-        // Admin Logic
-        function checkAdmin() {
-            const pass = document.getElementById("passInput").value;
-            if (pass === ADMIN_PASS) {
-                document.getElementById("admin-login-ui").classList.add("hidden");
-                document.getElementById("admin-dash-ui").classList.remove("hidden");
-                renderAdminList();
-            } else {
-                showToast("चुकीचा पासवर्ड!");
+                const waMsg = `*OMI SALON - NEW APPOINTMENT*%0A%0A👤 नाव: ${name}%0A📞 मोबाईल: ${phone}%0A💈 सेवा: ${svc}%0A⏰ वेळ: ${time}%0A🎟️ टोकन: #${token}`;
+                window.location.href = `https://wa.me/919145627957?text=${waMsg}`;
+            } catch (err) {
+                showToast("Booking Error: " + err.message);
+                btn.disabled = false;
+                btn.innerText = "कन्फर्म करा (WhatsApp)";
             }
-        }
+        };
 
-        function logout() {
-            document.getElementById("admin-login-ui").classList.remove("hidden");
-            document.getElementById("admin-dash-ui").classList.add("hidden");
-            document.getElementById("passInput").value = "";
-        }
-
-        function renderAdminList() {
+        window.renderAdminList = () => {
             const listContainer = document.getElementById("booking-list");
-            const db = getDb();
-            
-            if (db.length === 0) {
-                listContainer.innerHTML = `<p class="text-center text-gray-500 py-10">अद्याप कोणतीही बुकिंग नाही.</p>`;
+            if (!listContainer) return;
+
+            if (allBookings.length === 0) {
+                listContainer.innerHTML = `<p class="text-center text-gray-500 py-10">अद्याप बुकिंग नाही.</p>`;
                 return;
             }
 
-            listContainer.innerHTML = db.reverse().map(b => `
-                <div class="glass p-4 rounded-xl border-l-4 border-gold flex justify-between items-center">
+            listContainer.innerHTML = allBookings.map(b => `
+                <div class="glass p-4 rounded-xl border-l-4 border-gold flex justify-between items-center animate-in slide-in-from-bottom-2 duration-300">
                     <div>
                         <div class="flex items-center gap-2">
-                            <span class="text-[10px] bg-gold/20 text-gold px-2 rounded">#${b.token}</span>
-                            <h4 class="font-bold">${b.name}</h4>
+                            <span class="text-[10px] bg-gold/20 text-gold px-2 rounded font-bold">#${b.token}</span>
+                            <h4 class="font-bold text-white">${b.name}</h4>
                         </div>
                         <p class="text-xs text-gray-400 mt-1">${b.svc} • ${b.time}</p>
                     </div>
-                    <div class="flex gap-2">
-                        <button onclick="sendReminder('${b.name}', '${b.phone}', '${b.time}')" class="p-2 bg-green-500/20 text-green-400 rounded-lg text-xs">
-                            🔔 Remind
-                        </button>
-                    </div>
+                    <button onclick="window.sendReminder('${b.name}', '${b.phone}', '${b.time}')" class="p-2 bg-green-500/20 text-green-400 rounded-lg text-xs font-semibold">
+                        🔔 Remind
+                    </button>
                 </div>
             `).join('');
-        }
+        };
 
-        function sendReminder(n, p, t) {
-            const msg = `नमस्कार ${n},%0A%0A*OMI SALON* कडून आठवण: तुमची आजची अपॉइंटमेंट *${t}* वाजता आहे. कृपया वेळेवर या. धन्यवाद! 🙏`;
-            window.open(`https://wa.me/91${p}?text=${msg}`);
-        }
+        window.sendReminder = (n, p, t) => {
+            const msg = `नमस्कार ${n}, *OMI SALON* कडून आठवण: तुमची अपॉइंटमेंट *${t}* ला आहे. कृपया वेळेवर या.`;
+            window.open(`https://wa.me/91${p}?text=${encodeURIComponent(msg)}`);
+        };
 
-        function clearHistory() {
-            if(confirm("सर्व डेटा डिलीट करायचा आहे का?")) {
-                localStorage.removeItem("omi_bookings");
+        // UI Tabs & Auth
+        window.showTab = (tabId) => {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            const isBook = tabId === 'book-tab';
+            document.getElementById('btn-book-tab').className = isBook ? 'flex-1 py-3 rounded-lg font-semibold glass border-gold/50 text-gold' : 'flex-1 py-3 rounded-lg font-semibold glass text-gray-400';
+            document.getElementById('btn-admin-tab').className = !isBook ? 'flex-1 py-3 rounded-lg font-semibold glass border-gold/50 text-gold' : 'flex-1 py-3 rounded-lg font-semibold glass text-gray-400';
+        };
+
+        window.checkAdmin = () => {
+            if (document.getElementById("passInput").value === "omi123") {
+                document.getElementById("admin-login-ui").classList.add("hidden");
+                document.getElementById("admin-dash-ui").classList.remove("hidden");
                 renderAdminList();
-                updateSlots();
-            }
-        }
+            } else { showToast("चुकीचा पासवर्ड!"); }
+        };
 
-        // Custom Toast
+        window.logout = () => {
+            document.getElementById("admin-login-ui").classList.remove("hidden");
+            document.getElementById("admin-dash-ui").classList.add("hidden");
+            document.getElementById("passInput").value = "";
+        };
+
         function showToast(msg) {
             const t = document.getElementById("toast");
             t.textContent = msg;
             t.style.opacity = "1";
             t.style.transform = "translate(-50%, 0)";
-            setTimeout(() => {
-                t.style.opacity = "0";
-                t.style.transform = "translate(-50%, 40px)";
-            }, 3000);
+            setTimeout(() => { t.style.opacity = "0"; t.style.transform = "translate(-50%, 40px)"; }, 3000);
         }
 
-        // Initialize
-        window.onload = updateSlots;
+        init();
     </script>
 </body>
 </html>
 
-  
+                
