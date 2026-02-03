@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <title>OMI SALON | Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <h1>Admin Panel</h1>
+  <input type="password" id="pass" placeholder="Admin Password">
+  <button onclick="login()">Login</button>
+
+  <div id="bookings"></div>
+</div>
+
+<script>
+const ADMIN_PASS = "omi123";
+
+// Firebase config (same as script.js)
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+firebase.auth().signInAnonymously();
+
+function login(){
+  if(document.getElementById("pass").value === ADMIN_PASS){
+    loadBookings();
+  } else {
+    alert("चुकीचा पासवर्ड");
+  }
+}
+
+function loadBookings(){
+  const today = new Date().toISOString().split("T")[0];
+  const box = document.getElementById("bookings");
+  box.innerHTML = "<h3>आजच्या अपॉइंटमेंट</h3>";
+
+  db.collection(`bookings_${today}`).get().then(snap=>{
+    if(snap.empty){
+      box.innerHTML += "<p>आज booking नाही</p>";
+    }
+    snap.forEach(d=>{
+      const b = d.data();
+      box.innerHTML += `
+        <div class="card">
+          <b>${b.time}</b><br>
+          ${b.name}<br>
+          ${b.service}<br>
+          <button onclick="confirm('${b.phone}','${b.time}')">Confirm WhatsApp</button>
+        </div>`;
+    });
+  });
+}
+
+function confirm(phone,time){
+  const msg = `नमस्कार,
+OMI SALON कडून तुमची अपॉइंटमेंट ${time} ला confirm आहे.
+वेळेवर या. धन्यवाद!`;
+  window.open(`https://wa.me/91${phone}?text=${encodeURIComponent(msg)}`);
+}
+</script>
+</body>
+</html>
