@@ -1,47 +1,73 @@
 <!DOCTYPE html>
-<html lang="mr">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>OMI SALON | Appointment</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-
-  <link rel="stylesheet" href="style.css">
+<title>OMI SALON – Book Appointment</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="container">
   <h1>OMI SALON</h1>
-  <p class="subtitle">Luxury Grooming Experience</p>
+  <p>Premium Luxury Salon Experience</p>
 
-  <form id="bookingForm">
-    <input id="name" placeholder="तुमचं नाव" required>
-    <input id="phone" placeholder="मोबाईल नंबर" required>
-
-    <select id="service" required>
+  <div class="card">
+    <input id="name" placeholder="तुमचं नाव">
+    <input id="phone" placeholder="मोबाईल नंबर">
+    
+    <select id="service">
       <option value="">सेवा निवडा</option>
-      <option>Hair Cutting</option>
-      <option>Beard Shaving</option>
-      <option>Hair + Beard</option>
+      <option>Kes Cutting</option>
+      <option>Daadhi</option>
+      <option>Hair Color</option>
       <option>Facial</option>
-      <option>Massage</option>
     </select>
 
-    <input type="date" id="date" required>
-    <select id="time" required>
-      <option value="">वेळ निवडा</option>
-    </select>
+    <input type="date" id="date">
 
-    <button>अपॉइंटमेंट बुक करा</button>
-  </form>
+    <div id="slots"></div>
 
-  <p id="status"></p>
+    <button onclick="book()">बुक करा</button>
+    <p id="status"></p>
+  </div>
 </div>
 
-<script src="script.js"></script>
+<script type="module">
+import { db, APP_ID } from './firebase.js';
+import { collection, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+let selectedTime = "";
+const slotsDiv = document.getElementById("slots");
+
+function renderSlots(booked={}) {
+  slotsDiv.innerHTML="";
+  for(let h=10;h<21;h++){
+    for(let m of ["00","30"]){
+      let t=`${h}:${m}`;
+      let div=document.createElement("div");
+      div.className="slot";
+      div.innerText=t;
+      if(booked[t]) div.classList.add("booked");
+      div.onclick=()=>selectedTime=t;
+      slotsDiv.appendChild(div);
+    }
+  }
+}
+
+renderSlots();
+
+window.book = async () => {
+  if(!selectedTime) return alert("वेळ निवडा");
+  const date=document.getElementById("date").value;
+  const ref=doc(db,"artifacts",APP_ID,"public","data",`bookings_${date}`,selectedTime.replace(":",""));
+  await setDoc(ref,{
+    name:name.value,
+    phone:phone.value,
+    service:service.value,
+    time:selectedTime,
+    date
+  });
+  window.location.href=`https://wa.me/919145627957`;
+};
+</script>
 </body>
 </html>
