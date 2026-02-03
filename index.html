@@ -2,8 +2,8 @@
 <html lang="mr">
 <head>
   <meta charset="UTF-8">
-  <title>OMI SALON – Appointment Booking</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OMI SALON | Appointment</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -16,12 +16,11 @@
 
 <div class="container">
   <h1>OMI SALON</h1>
-  <p class="subtitle">अपॉइंटमेंट बुक करा</p>
+  <p class="subtitle">Luxury Grooming Experience</p>
 
   <form id="bookingForm">
-    <input type="text" id="name" placeholder="तुमचं पूर्ण नाव" required>
-
-    <input type="tel" id="phone" placeholder="मोबाईल नंबर" required>
+    <input id="name" placeholder="तुमचं नाव" required>
+    <input id="phone" placeholder="मोबाईल नंबर" required>
 
     <select id="service" required>
       <option value="">सेवा निवडा</option>
@@ -33,12 +32,11 @@
     </select>
 
     <input type="date" id="date" required>
-
     <select id="time" required>
       <option value="">वेळ निवडा</option>
     </select>
 
-    <button type="submit">बुक करा</button>
+    <button>अपॉइंटमेंट बुक करा</button>
   </form>
 
   <p id="status"></p>
