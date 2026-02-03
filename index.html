@@ -3,160 +3,250 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OMI SALON | Premium Appointment Booking</title>
+<title>OMI SALON | Appointment</title>
 
-<!-- Google Font -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
 <style>
-*{box-sizing:border-box;font-family:'Poppins',sans-serif}
-body{margin:0;background:#0f0f0f;color:#fff}
-header,footer{background:#000;padding:20px;text-align:center}
-h1{color:#d4af37;margin:0}
-.container{max-width:1100px;margin:auto;padding:20px}
-.card{background:#161616;border-radius:16px;padding:20px;margin-bottom:20px}
-input,select,button{
-width:100%;padding:12px;margin-top:10px;
-border-radius:10px;border:none;font-size:15px
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins}
+body{
+  background:linear-gradient(135deg,#0f0f0f,#1c1c1c);
+  color:#fff;
+  min-height:100vh;
+  animation:fadeIn 0.8s ease;
 }
-button{background:#d4af37;color:#000;font-weight:700;cursor:pointer}
-button:hover{opacity:0.9}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-@media(max-width:768px){.grid{grid-template-columns:1fr}}
-.admin{display:none}
-.booking{border-bottom:1px solid #333;padding:10px 0}
-.badge{background:#d4af37;color:#000;padding:4px 10px;border-radius:8px;font-size:12px}
-footer{font-size:13px;color:#aaa}
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+header{
+  padding:18px;
+  text-align:center;
+  background:#000;
+  border-bottom:1px solid #333;
+}
+header h1{color:#d4af37;font-size:26px}
+header p{font-size:13px;color:#bbb}
+
+.container{
+  max-width:420px;
+  margin:25px auto;
+  padding:20px;
+  background:#121212;
+  border-radius:16px;
+  box-shadow:0 0 25px rgba(0,0,0,.6);
+}
+
+.tokenBox{
+  text-align:center;
+  margin-bottom:15px;
+}
+.tokenBox h2{font-size:14px;color:#aaa}
+.tokenBox span{
+  font-size:42px;
+  color:#d4af37;
+  font-weight:700;
+}
+
+label{font-size:13px;color:#ccc}
+input,select{
+  width:100%;
+  padding:12px;
+  margin:8px 0 15px;
+  border-radius:10px;
+  border:none;
+  background:#1f1f1f;
+  color:#fff;
+}
+input:focus,select:focus{outline:2px solid #d4af37}
+
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  background:#d4af37;
+  color:#000;
+  font-weight:700;
+  font-size:15px;
+  cursor:pointer;
+  transition:.3s;
+}
+button:hover{background:#e6c85c}
+
+.slotFull{
+  background:#444 !important;
+  color:#999 !important;
+  pointer-events:none;
+}
+
+footer{
+  text-align:center;
+  padding:15px;
+  font-size:12px;
+  color:#aaa;
+}
+footer span{color:#d4af37}
+
+.admin{
+  margin-top:25px;
+  padding:15px;
+  background:#0b0b0b;
+  border-radius:12px;
+}
+.admin h3{
+  color:#d4af37;
+  font-size:15px;
+  margin-bottom:10px;
+}
+.booking{
+  font-size:12px;
+  padding:8px;
+  border-bottom:1px dashed #333;
+}
+.remBtn{
+  margin-top:6px;
+  padding:6px;
+  font-size:12px;
+  background:#25D366;
+  color:#000;
+  border-radius:8px;
+  text-align:center;
+}
 </style>
 </head>
 
 <body>
 
 <header>
-<h1>OMI SALON ✂️</h1>
-<p>सकाळी 9:00 ते रात्री 8:00 | Premium Grooming Experience</p>
+  <h1>OMI SALON</h1>
+  <p>सकाळी 9 ते रात्री 8 | Premium Grooming</p>
 </header>
 
 <div class="container">
 
-<!-- CUSTOMER -->
-<div class="card">
-<h2>अपॉइंटमेंट बुक करा</h2>
+  <div class="tokenBox">
+    <h2>आपला Token</h2>
+    <span id="token">1</span>
+  </div>
 
-<input id="name" placeholder="तुमचे पूर्ण नाव">
-<input id="phone" placeholder="मोबाईल नंबर (10 अंकी)">
-<select id="service">
-<option value="">सेवा निवडा</option>
-<option>Hair Cut</option>
-<option>Beard Trim</option>
-<option>Hair + Beard</option>
-<option>Facial</option>
-</select>
-<input type="date" id="date">
-<select id="time"></select>
+  <label>नाव</label>
+  <input id="name" placeholder="तुमचे नाव">
 
-<button onclick="book()">अपॉइंटमेंट बुक करा</button>
-</div>
+  <label>मोबाईल नंबर</label>
+  <input id="phone" placeholder="10 अंकी नंबर" maxlength="10">
 
-<!-- ADMIN -->
-<div class="card">
-<h2>🔐 Admin Login</h2>
-<input id="adminPass" type="password" placeholder="Admin Password">
-<button onclick="adminLogin()">Login</button>
-</div>
+  <label>सेवा</label>
+  <select id="service">
+    <option value="">सेवा निवडा</option>
+    <option>Hair Cut</option>
+    <option>Beard Trim</option>
+    <option>Hair + Beard</option>
+    <option>Facial</option>
+  </select>
 
-<div class="card admin" id="adminPanel">
-<h2>📋 आजच्या Booking</h2>
-<div id="list"></div>
-</div>
+  <label>वेळ (Slot)</label>
+  <select id="time"></select>
+
+  <button onclick="book()">Book Appointment</button>
+
+  <!-- ADMIN -->
+  <div class="admin">
+    <h3>🔐 Admin Dashboard</h3>
+    <div id="adminList"></div>
+  </div>
 
 </div>
 
 <footer>
-<p>📍 OMI SALON, Kolhapur</p>
-<p>📞 +91 91456 27957</p>
-<p>Developed by <b>Sourabh</b></p>
+  Developed by <span>Sourabh</span>
 </footer>
 
 <script>
-// 🔥 Firebase Config (तुझं दिलेलं)
-const firebaseConfig = {
-  apiKey: "AIzaSyAGu894r9r05lgFjdVC6OGM361oWUBvDD0",
-  authDomain: "omi-salon.firebaseapp.com",
-  projectId: "omi-salon"
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-// Constants
 const OWNER = "919145627957";
-const ADMIN_PASSWORD = "omi123";
+let token = 1;
+let bookings = [];
+const slotCount = {};
 
-// Time slots
-const timeSelect = document.getElementById("time");
-for(let h=9; h<=20; h++){
- let t = (h<10?"0":"")+h+":00";
- let o = document.createElement("option");
- o.value=t; o.innerText=t;
- timeSelect.appendChild(o);
+document.getElementById("token").innerText = token;
+
+// auto date
+const today = new Date().toISOString().split("T")[0];
+
+// slots
+const timeSel = document.getElementById("time");
+for(let h=9;h<=20;h++){
+  const opt=document.createElement("option");
+  opt.value = h;
+  opt.text = (h<=12?h:h-12)+" "+(h<12?"AM":"PM");
+  timeSel.appendChild(opt);
 }
 
-// Token
-let token = Math.floor(100 + Math.random()*900);
-
-// Booking
 function book(){
- let n=name.value.trim(), p=phone.value.trim(),
- s=service.value, d=date.value, t=time.value;
+  const n=name.value.trim();
+  const p=phone.value.trim();
+  const s=service.value;
+  const t=time.value;
 
- if(!n||p.length!=10||!s||!d||!t){
-  alert("सर्व माहिती भरा");
-  return;
- }
+  if(!n || p.length!=10 || !s || !t){
+    alert("सर्व माहिती भरा");
+    return;
+  }
 
- let data={n,p,s,d,t,token,ts:Date.now()};
- db.collection("bookings").add(data).then(()=>{
-  let msg=`नमस्कार 🙏
-आपली *OMI SALON* अपॉइंटमेंट कन्फर्म झाली आहे.
+  slotCount[t]=(slotCount[t]||0)+1;
+  if(slotCount[t]>2){
+    alert("हा Slot Full आहे");
+    return;
+  }
 
-🔢 टोकन: ${token}
-📅 तारीख: ${d}
-⏰ वेळ: ${t}
+  const msg=`नमस्कार OMI SALON ✂️%0A
+नाव: ${n}%0A
+मोबाईल: ${p}%0A
+सेवा: ${s}%0A
+वेळ: ${t}%0A
+Token: ${token}`;
 
-धन्यवाद ✂️`;
+  window.open(`https://wa.me/${OWNER}?text=${msg}`,"_blank");
 
-  window.open(`https://wa.me/${OWNER}?text=`+encodeURIComponent("नवीन Booking:\n"+msg));
-  setTimeout(()=>window.open(`https://wa.me/91${p}?text=`+encodeURIComponent(msg)),400);
-  alert("Booking Successful");
- });
+  bookings.push({n,p,s,t,token});
+  renderAdmin();
+
+  token++;
+  document.getElementById("token").innerText=token;
+
+  if(slotCount[t]>=2){
+    [...timeSel.options].forEach(o=>{
+      if(o.value==t){o.disabled=true;o.text+=" (FULL)"}
+    })
+  }
+
+  name.value=phone.value="";
+  service.value="";
 }
 
-// Admin
-function adminLogin(){
- if(adminPass.value===ADMIN_PASSWORD){
-  document.querySelector(".admin").style.display="block";
-  loadBookings();
- }else alert("चुकीचा पासवर्ड");
-}
-
-function loadBookings(){
- db.collection("bookings").orderBy("ts","desc")
- .onSnapshot(snap=>{
-  list.innerHTML="";
-  snap.forEach(d=>{
-   let b=d.data();
-   list.innerHTML+=`
-   <div class="booking">
-    <b>${b.n}</b> | ${b.t} <span class="badge">Token ${b.token}</span><br>
-    ${b.s}<br>
-    <button onclick="window.open('https://wa.me/91${b.p}')">🔔 Reminder</button>
-   </div>`;
+function renderAdmin(){
+  adminList.innerHTML="";
+  bookings.forEach(b=>{
+    const div=document.createElement("div");
+    div.className="booking";
+    div.innerHTML=`
+    Token ${b.token} | ${b.n} | ${b.t}
+    <div class="remBtn" onclick="remind('${b.p}','${b.token}','${b.t}')">
+      🔔 Reminder
+    </div>`;
+    adminList.appendChild(div);
   });
- });
+}
+
+function remind(p,tk,t){
+  const m=`नमस्कार 😊%0A
+आपली OMI SALON अपॉइंटमेंट आठवण.%0A
+Token: ${tk}%0A
+वेळ: ${t}%0A
+(1 तास आधी)%0A
+धन्यवाद`;
+  window.open(`https://wa.me/91${p}?text=${m}`,"_blank");
 }
 </script>
 
