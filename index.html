@@ -1,274 +1,160 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="mr">
 <head>
-<meta charset="UTF-8" />
-<title>OMI SALON | Premium Appointment Booking</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-<!-- Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
-
-<style>
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Poppins,system-ui;
-  background:radial-gradient(circle at top,#1c1c1c,#000);
-  color:#fff;
-}
-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:20px 30px;
-  border-bottom:1px solid rgba(255,255,255,.1);
-}
-.brand{
-  font-size:22px;
-  font-weight:800;
-  letter-spacing:3px;
-  color:#C5A059;
-}
-.container{
-  max-width:1100px;
-  margin:auto;
-  padding:30px;
-}
-.hero{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:40px;
-}
-.card{
-  background:rgba(255,255,255,.05);
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:24px;
-  padding:30px;
-  box-shadow:0 30px 80px rgba(0,0,0,.6);
-}
-h1{
-  font-size:42px;
-  margin:0;
-}
-.gold{color:#C5A059}
-p{opacity:.85;line-height:1.7}
-
-input,select,button{
-  width:100%;
-  padding:15px;
-  border-radius:14px;
-  border:none;
-  margin-top:12px;
-  background:#111;
-  color:#fff;
-  font-size:14px;
-}
-button{
-  background:#C5A059;
-  color:#000;
-  font-weight:800;
-  letter-spacing:2px;
-  cursor:pointer;
-}
-button:hover{opacity:.9}
-
-.slots{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(80px,1fr));
-  gap:10px;
-  margin-top:15px;
-}
-.slot{
-  padding:10px;
-  border-radius:10px;
-  border:1px solid rgba(255,255,255,.2);
-  text-align:center;
-  cursor:pointer;
-  font-size:13px;
-}
-.slot.active{
-  background:#C5A059;
-  color:#000;
-  font-weight:700;
-}
-.slot.booked{
-  opacity:.35;
-  pointer-events:none;
-}
-
-footer{
-  margin-top:60px;
-  padding:30px;
-  border-top:1px solid rgba(255,255,255,.1);
-  text-align:center;
-  font-size:13px;
-  opacity:.8;
-}
-
-@media(max-width:900px){
-  .hero{grid-template-columns:1fr}
-}
-</style>
-</head>
-
-<body>
-
-<header>
-  <div class="brand">OMI SALON</div>
-  <div>Premium Luxury Salon</div>
-</header>
-
-<div class="container">
-  <div class="hero">
-
-    <!-- LEFT INFO -->
-    <div class="card">
-      <h1>Perfect <span class="gold">Look</span><br/>Awaits You</h1>
-      <p>
-        आम्ही तुम्हाला फक्त लुक नाही तर एक रॉयल अनुभव देतो.
-        अलाबाद, कोल्हापूर मधील सर्वात आधुनिक प्रीमियम सलून.
-      </p>
-
-      <p>
-        📍 <b>Location:</b> Alabad, Kolhapur, Maharashtra<br/>
-        👑 <b>Owner:</b> Omkar Mane<br/>
-        📞 <b>Contact:</b> +91 91456 27957
-      </p>
-    </div>
-
-    <!-- BOOKING -->
-    <div class="card">
-      <h2 class="gold">Book Appointment</h2>
-
-      <input id="name" placeholder="Full Name"/>
-      <input id="phone" placeholder="Mobile Number"/>
-
-      <select id="service">
-        <option value="">Select Service</option>
-        <option>Kes Cutting</option>
-        <option>Daadhi (Shaving)</option>
-        <option>Cutting + Daadhi</option>
-        <option>Hair Color</option>
-        <option>Facial</option>
-        <option>Massage</option>
-      </select>
-
-      <input type="date" id="date"/>
-
-      <div class="slots" id="slots"></div>
-
-      <button onclick="book()">CONFIRM BOOKING</button>
-      <p id="status"></p>
-    </div>
-
-  </div>
-</div>
-
-<footer>
-  © 2026 OMI SALON. Luxury Defined.<br/>
-  Developed by <b>Sourabh</b>
-</footer>
-
-<!-- FIREBASE -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OMI SALON</title>
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-app.js";
+  import { getFirestore, collection, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-firestore.js";
+  import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-auth.js";
 
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_DOMAIN",
-  projectId: "YOUR_PROJECT_ID"
-};
-
-const OWNER_NUMBER = "919145627957";
-const APP_ID = "omi-salon-gold-3d";
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-signInAnonymously(getAuth(app));
-
-let selectedTime = "";
-const slotsDiv = document.getElementById("slots");
-
-function generateSlots(booked={}){
-  slotsDiv.innerHTML="";
-  for(let h=10;h<21;h++){
-    for(let m of ["00","30"]){
-      const t=`${h}:${m}`;
-      const d=document.createElement("div");
-      d.className="slot";
-      d.innerText=t;
-      if(booked[t]) d.classList.add("booked");
-      d.onclick=()=>{
-        document.querySelectorAll(".slot").forEach(s=>s.classList.remove("active"));
-        d.classList.add("active");
-        selectedTime=t;
-      };
-      slotsDiv.appendChild(d);
-    }
-  }
-}
-
-generateSlots();
-
-date.onchange=()=>{
-  const q=collection(db,"artifacts",APP_ID,"public","data",`bookings_${date.value}`);
-  onSnapshot(q,snap=>{
-    const booked={};
-    snap.forEach(d=>booked[d.data().time]=true);
-    generateSlots(booked);
-  });
-};
-
-window.book = async ()=>{
-  if(!selectedTime) return alert("Select time");
-  const data={
-    name:name.value,
-    phone:phone.value,
-    service:service.value,
-    date:date.value,
-    time:selectedTime,
-    ts:Date.now()
+  // --- Firebase Configuration ---
+  const firebaseConfig = {
+    apiKey: "AIzaSyAGu894r9r051gFjdVC6OGM361oWUbVD0",
+    authDomain: "omi-salon.firebaseapp.com",
+    projectId: "omi-salon",
+    storageBucket: "omi-salon.firebasestorage.app",
+    messagingSenderId: "940217697993",
+    appId: "1:940217697993:web:c30ed53de67cf17507af18",
+    measurementId: "G-7GRXZEY934"
   };
 
-  await setDoc(
-    doc(db,"artifacts",APP_ID,"public","data",`bookings_${date.value}`,selectedTime.replace(":","")),
-    data
-  );
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
 
-  // OWNER MSG
-  const ownerMsg =
-`नमस्कार *OMI SALON* (ओंकार माने)
+  // Owner Details
+  const OWNER_NAME = "Omkar Mane";
+  const OWNER_MOBILE = "919145627957";
+  const ADMIN_PASSWORD = "omi123";
+  const services = ["Kes Cutting","Daadhi (Shaving)","Cutting + Daadhi","Hair Color","Facial","Massage"];
 
-👤 ग्राहक: ${data.name}
-📞 मोबाईल: ${data.phone}
-📅 तारीख: ${data.date}
-⏰ वेळ: ${data.time}
-✂️ सेवा: ${data.service}
+  let user = null;
+  signInAnonymously(auth);
+  onAuthStateChanged(auth, u => user = u);
 
-कृपया बुकिंग नोंद घ्या.`;
+  window.appData = {
+    bookedSlots: {},
+    formData: { name:'', phone:'', service:'', date: new Date().toISOString().split('T')[0], time:'' }
+  };
 
-  // CUSTOMER MSG
-  const custMsg =
-`नमस्कार ${data.name},
+  // Load booked slots for today
+  function loadSlots(date){
+    if(!user) return;
+    const q = collection(db, 'artifacts', 'omi-salon-gold-3d', 'public', 'data', `bookings_${date}`);
+    onSnapshot(q, snapshot=>{
+      const slots = {};
+      snapshot.forEach(d=>slots[d.id]={id:d.id,...d.data()});
+      window.appData.bookedSlots = slots;
+      renderSlots();
+    });
+  }
 
-*OMI SALON* कडून तुमची appointment confirm झाली आहे ✅
+  function bookSlot(e){
+    e.preventDefault();
+    const fd = window.appData.formData;
+    const slotId = fd.time.replace(':','');
+    if(window.appData.bookedSlots[slotId]){
+      alert("हा slot आधीच book झाला आहे!");
+      return;
+    }
+    const docRef = doc(db, 'artifacts', 'omi-salon-gold-3d', 'public', 'data', `bookings_${fd.date}`, slotId);
+    setDoc(docRef, {...fd, timestamp:new Date().getTime()})
+    .then(()=>{
+      const ownerMsg = `नमस्कार ${OWNER_NAME}, \n\n${fd.name} ने booking केली आहे.\nसेवा: ${fd.service}\nतारीख: ${fd.date}\nवेळ: ${fd.time}`;
+      window.open(`https://wa.me/${OWNER_MOBILE}?text=${encodeURIComponent(ownerMsg)}`, '_blank');
+      const customerMsg = `नमस्कार ${fd.name}, \n\nतुमची booking ${fd.service} साठी ${fd.date} रोजी ${fd.time} वाजता confirm झाली आहे.\nOMI SALON`;
+      window.open(`https://wa.me/91${fd.phone}?text=${encodeURIComponent(customerMsg)}`, '_blank');
+      alert("Booking Confirmed!");
+      window.appData.formData = { name:'', phone:'', service:'', date:fd.date, time:'' };
+      renderForm();
+    })
+    .catch(err=>alert("Booking मध्ये त्रुटी आली!"));
+  }
 
-📅 ${data.date}
-⏰ ${data.time}
-✂️ ${data.service}
+  function renderSlots(){
+    const slotContainer = document.getElementById('slots');
+    slotContainer.innerHTML='';
+    const slots = Object.values(window.appData.bookedSlots).sort((a,b)=>a.time.localeCompare(b.time));
+    if(slots.length===0){ slotContainer.innerHTML="<p>आज अजून कोणतीही booking नाही.</p>"; return; }
+    slots.forEach(b=>{
+      const div = document.createElement('div');
+      div.textContent = `${b.time} - ${b.name} (${b.service})`;
+      slotContainer.appendChild(div);
+    });
+  }
 
-वेळेवर या.
-धन्यवाद!
-– Omkar Mane`;
+  function renderForm(){
+    document.getElementById('name').value = window.appData.formData.name;
+    document.getElementById('phone').value = window.appData.formData.phone;
+    document.getElementById('service').value = window.appData.formData.service;
+    document.getElementById('date').value = window.appData.formData.date;
+    document.getElementById('time').value = window.appData.formData.time;
+  }
 
-  window.open(`https://wa.me/${OWNER_NUMBER}?text=${encodeURIComponent(ownerMsg)}`);
-  setTimeout(()=>{
-    window.open(`https://wa.me/91${data.phone}?text=${encodeURIComponent(custMsg)}`);
-  },800);
-};
+  function setFormValue(field,val){ window.appData.formData[field]=val; }
+
+  function checkAdmin(){
+    const pass = prompt("Admin Password?");
+    if(pass===ADMIN_PASSWORD){
+      alert("Admin Access Granted!");
+      document.getElementById('adminPanel').style.display='block';
+    }else alert("पासवर्ड चुकीचा!");
+  }
+
+  window.onload = ()=>{
+    loadSlots(window.appData.formData.date);
+    renderForm();
+    document.getElementById('date').addEventListener('change', e=>{ window.appData.formData.date=e.target.value; loadSlots(e.target.value); });
+  };
 </script>
-
+<style>
+  body{margin:0;font-family:sans-serif;background:linear-gradient(45deg,#C5A059,#222);}
+  header{padding:20px;text-align:center;color:white;font-weight:bold;font-size:24px;}
+  main{display:flex;flex-wrap:wrap;gap:30px;padding:20px;justify-content:center;}
+  .form, .slots, .admin{background:white/10;padding:20px;border-radius:15px;color:white;width:300px;}
+  input, select, button{width:100%;margin:5px 0;padding:8px;border-radius:8px;border:none;}
+  button{background:#C5A059;color:black;font-weight:bold;cursor:pointer;}
+  button:hover{transform:scale(1.05);transition:0.3s;}
+  #adminPanel{display:none;}
+</style>
+</head>
+<body>
+<header>OMI SALON - Premium Booking</header>
+<main>
+  <div class="form">
+    <h3>Booking Form</h3>
+    <form onsubmit="bookSlot(event)">
+      <input type="text" id="name" placeholder="तुमचं नाव" oninput="setFormValue('name',this.value)" required>
+      <input type="tel" id="phone" placeholder="मोबाइल नंबर" oninput="setFormValue('phone',this.value)" required>
+      <select id="service" oninput="setFormValue('service',this.value)" required>
+        <option value="">सेवा निवडा</option>
+        <option value="Kes Cutting">Kes Cutting</option>
+        <option value="Daadhi (Shaving)">Daadhi (Shaving)</option>
+        <option value="Cutting + Daadhi">Cutting + Daadhi</option>
+        <option value="Hair Color">Hair Color</option>
+        <option value="Facial">Facial</option>
+        <option value="Massage">Massage</option>
+      </select>
+      <input type="date" id="date" oninput="setFormValue('date',this.value)" required>
+      <input type="time" id="time" oninput="setFormValue('time',this.value)" required>
+      <button type="submit">Book Now</button>
+    </form>
+  </div>
+  <div class="slots" id="slots">
+    <h3>Today's Bookings</h3>
+  </div>
+  <div class="admin">
+    <h3>Admin Panel</h3>
+    <button onclick="checkAdmin()">Login as Admin</button>
+    <div id="adminPanel">
+      <p>Admin Access Granted!</p>
+      <p>Owner: Omkar Mane</p>
+      <p>WhatsApp: 919145627957</p>
+      <p>Developed by Sourabh</p>
+    </div>
+  </div>
+</main>
 </body>
-  </html>
+</html>
