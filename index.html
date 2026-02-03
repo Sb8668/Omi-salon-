@@ -3,250 +3,222 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OMI SALON | Appointment</title>
-
-<!-- Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<title>OMI SALON | Online Booking</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins}
+*{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
 body{
-  background:linear-gradient(135deg,#0f0f0f,#1c1c1c);
+  margin:0;
+  background:linear-gradient(135deg,#000,#1a1a1a);
   color:#fff;
-  min-height:100vh;
-  animation:fadeIn 0.8s ease;
-}
-@keyframes fadeIn{
-  from{opacity:0;transform:translateY(20px)}
-  to{opacity:1;transform:translateY(0)}
 }
 header{
   padding:18px;
   text-align:center;
-  background:#000;
-  border-bottom:1px solid #333;
+  font-size:26px;
+  font-weight:bold;
+  background:#111;
+  letter-spacing:1px;
 }
-header h1{color:#d4af37;font-size:26px}
-header p{font-size:13px;color:#bbb}
-
+header span{color:gold}
 .container{
   max-width:420px;
-  margin:25px auto;
-  padding:20px;
-  background:#121212;
+  margin:20px auto;
+  background:#0d0d0d;
   border-radius:16px;
-  box-shadow:0 0 25px rgba(0,0,0,.6);
+  padding:20px;
+  box-shadow:0 0 20px rgba(255,215,0,0.15);
+  animation:fade 0.6s ease;
 }
-
-.tokenBox{
-  text-align:center;
-  margin-bottom:15px;
+@keyframes fade{
+  from{opacity:0;transform:translateY(15px)}
+  to{opacity:1;transform:none}
 }
-.tokenBox h2{font-size:14px;color:#aaa}
-.tokenBox span{
-  font-size:42px;
-  color:#d4af37;
-  font-weight:700;
-}
-
-label{font-size:13px;color:#ccc}
-input,select{
+h2{text-align:center;margin:10px 0;color:gold}
+label{font-size:14px;opacity:.9}
+input,select,button{
   width:100%;
+  margin:8px 0 14px;
   padding:12px;
-  margin:8px 0 15px;
   border-radius:10px;
   border:none;
-  background:#1f1f1f;
-  color:#fff;
-}
-input:focus,select:focus{outline:2px solid #d4af37}
-
-button{
-  width:100%;
-  padding:14px;
-  border:none;
-  border-radius:12px;
-  background:#d4af37;
-  color:#000;
-  font-weight:700;
+  outline:none;
   font-size:15px;
+}
+input,select{background:#1f1f1f;color:#fff}
+button{
+  background:linear-gradient(135deg,gold,#b08d00);
+  color:#000;
+  font-weight:bold;
   cursor:pointer;
   transition:.3s;
 }
-button:hover{background:#e6c85c}
-
-.slotFull{
-  background:#444 !important;
-  color:#999 !important;
-  pointer-events:none;
-}
-
-footer{
+button:hover{transform:scale(1.03)}
+.token{
   text-align:center;
-  padding:15px;
-  font-size:12px;
-  color:#aaa;
-}
-footer span{color:#d4af37}
-
-.admin{
-  margin-top:25px;
-  padding:15px;
-  background:#0b0b0b;
-  border-radius:12px;
-}
-.admin h3{
-  color:#d4af37;
-  font-size:15px;
+  font-size:22px;
   margin-bottom:10px;
 }
-.booking{
+footer{
+  text-align:center;
+  padding:12px;
   font-size:12px;
+  opacity:.7;
+}
+.admin{
+  margin-top:20px;
+  background:#111;
+  padding:12px;
+  border-radius:12px;
+}
+.booking{
   padding:8px;
-  border-bottom:1px dashed #333;
+  border-bottom:1px solid #333;
+  font-size:13px;
 }
 .remBtn{
-  margin-top:6px;
-  padding:6px;
+  color:gold;
   font-size:12px;
-  background:#25D366;
-  color:#000;
-  border-radius:8px;
-  text-align:center;
+  cursor:pointer;
 }
+.full{color:red}
 </style>
 </head>
 
 <body>
 
-<header>
-  <h1>OMI SALON</h1>
-  <p>सकाळी 9 ते रात्री 8 | Premium Grooming</p>
-</header>
+<header>OMI <span>SALON</span></header>
 
 <div class="container">
+<h2>अपॉइंटमेंट बुक करा</h2>
 
-  <div class="tokenBox">
-    <h2>आपला Token</h2>
-    <span id="token">1</span>
-  </div>
+<div class="token">🎟️ Token: <span id="token">1</span></div>
 
-  <label>नाव</label>
-  <input id="name" placeholder="तुमचे नाव">
+<label>नाव</label>
+<input id="name" placeholder="तुमचं पूर्ण नाव">
 
-  <label>मोबाईल नंबर</label>
-  <input id="phone" placeholder="10 अंकी नंबर" maxlength="10">
+<label>मोबाईल नंबर</label>
+<input id="phone" type="tel" placeholder="10 अंकी मोबाईल नंबर">
 
-  <label>सेवा</label>
-  <select id="service">
-    <option value="">सेवा निवडा</option>
-    <option>Hair Cut</option>
-    <option>Beard Trim</option>
-    <option>Hair + Beard</option>
-    <option>Facial</option>
-  </select>
+<label>सेवा</label>
+<select id="service">
+  <option value="">सेवा निवडा</option>
+  <option>Hair Cut</option>
+  <option>Beard</option>
+  <option>Facial</option>
+  <option>Hair Spa</option>
+</select>
 
-  <label>वेळ (Slot)</label>
-  <select id="time"></select>
+<label>वेळ (सकाळी 9 ते रात्री 8)</label>
+<select id="time"></select>
 
-  <button onclick="book()">Book Appointment</button>
+<button onclick="book()">Book Appointment</button>
 
-  <!-- ADMIN -->
-  <div class="admin">
-    <h3>🔐 Admin Dashboard</h3>
-    <div id="adminList"></div>
-  </div>
+<div class="admin">
+<h3>🔐 Admin Dashboard</h3>
+<div id="adminList"></div>
+</div>
 
 </div>
 
 <footer>
-  Developed by <span>Sourabh</span>
+OMI SALON | सकाळी 10 ते रात्री 9<br>
+Developed by Sourabh
 </footer>
 
 <script>
-const OWNER = "919145627957";
-let token = 1;
-let bookings = [];
-const slotCount = {};
+const OWNER="919145627957";
+let token=1;
+let bookings=[];
+let slotCount={};
 
-document.getElementById("token").innerText = token;
+const timeSel=document.getElementById("time");
 
-// auto date
-const today = new Date().toISOString().split("T")[0];
+// default option
+let d=document.createElement("option");
+d.value="";
+d.text="वेळ निवडा";
+d.disabled=true;
+d.selected=true;
+timeSel.appendChild(d);
 
 // slots
-const timeSel = document.getElementById("time");
 for(let h=9;h<=20;h++){
-  const opt=document.createElement("option");
-  opt.value = h;
-  opt.text = (h<=12?h:h-12)+" "+(h<12?"AM":"PM");
-  timeSel.appendChild(opt);
+ let o=document.createElement("option");
+ o.value=h;
+ o.text=(h<=12?h:h-12)+" "+(h<12?"AM":"PM");
+ timeSel.appendChild(o);
 }
 
 function book(){
-  const n=name.value.trim();
-  const p=phone.value.trim();
-  const s=service.value;
-  const t=time.value;
+ const n=name.value.trim();
+ const p=phone.value.trim();
+ const s=service.value;
+ const t=time.value;
 
-  if(!n || p.length!=10 || !s || !t){
-    alert("सर्व माहिती भरा");
-    return;
-  }
+ if(!n||p.length!=10||!s||!t){
+  alert("कृपया सर्व माहिती भरा");
+  return;
+ }
 
-  slotCount[t]=(slotCount[t]||0)+1;
-  if(slotCount[t]>2){
-    alert("हा Slot Full आहे");
-    return;
-  }
+ slotCount[t]=(slotCount[t]||0)+1;
+ if(slotCount[t]>2){
+  alert("हा Slot Full आहे");
+  return;
+ }
 
-  const msg=`नमस्कार OMI SALON ✂️%0A
-नाव: ${n}%0A
-मोबाईल: ${p}%0A
-सेवा: ${s}%0A
-वेळ: ${t}%0A
+ const msg=
+`नमस्कार OMI SALON ✂️
+नाव: ${n}
+मोबाईल: ${p}
+सेवा: ${s}
+वेळ: ${t}
 Token: ${token}`;
 
-  window.open(`https://wa.me/${OWNER}?text=${msg}`,"_blank");
+ location.href="https://wa.me/"+OWNER+"?text="+encodeURIComponent(msg);
 
-  bookings.push({n,p,s,t,token});
-  renderAdmin();
+ bookings.push({n,p,s,t,token});
+ renderAdmin();
 
-  token++;
-  document.getElementById("token").innerText=token;
+ token++;
+ document.getElementById("token").innerText=token;
 
-  if(slotCount[t]>=2){
-    [...timeSel.options].forEach(o=>{
-      if(o.value==t){o.disabled=true;o.text+=" (FULL)"}
-    })
-  }
+ if(slotCount[t]>=2){
+  [...timeSel.options].forEach(o=>{
+   if(o.value===t){
+    o.disabled=true;
+    o.text+=" (FULL)";
+    o.className="full";
+   }
+  });
+ }
 
-  name.value=phone.value="";
-  service.value="";
+ name.value="";
+ phone.value="";
+ service.value="";
+ timeSel.selectedIndex=0;
 }
 
 function renderAdmin(){
-  adminList.innerHTML="";
-  bookings.forEach(b=>{
-    const div=document.createElement("div");
-    div.className="booking";
-    div.innerHTML=`
-    Token ${b.token} | ${b.n} | ${b.t}
-    <div class="remBtn" onclick="remind('${b.p}','${b.token}','${b.t}')">
-      🔔 Reminder
-    </div>`;
-    adminList.appendChild(div);
-  });
+ adminList.innerHTML="";
+ bookings.forEach(b=>{
+  let d=document.createElement("div");
+  d.className="booking";
+  d.innerHTML=
+   `Token ${b.token} | ${b.n} | ${b.t}
+   <div class="remBtn" onclick="remind('${b.p}','${b.token}','${b.t}')">🔔 Reminder</div>`;
+  adminList.appendChild(d);
+ });
 }
 
 function remind(p,tk,t){
-  const m=`नमस्कार 😊%0A
-आपली OMI SALON अपॉइंटमेंट आठवण.%0A
-Token: ${tk}%0A
-वेळ: ${t}%0A
-(1 तास आधी)%0A
-धन्यवाद`;
-  window.open(`https://wa.me/91${p}?text=${m}`,"_blank");
+ const m=
+`नमस्कार 😊
+आपली OMI SALON अपॉइंटमेंट आठवण
+Token: ${tk}
+वेळ: ${t}
+(1 तास आधी)`;
+ location.href="https://wa.me/91"+p+"?text="+encodeURIComponent(m);
 }
 </script>
 
