@@ -1,73 +1,274 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>OMI SALON – Book Appointment</title>
-<link rel="stylesheet" href="style.css">
+<meta charset="UTF-8" />
+<title>OMI SALON | Premium Appointment Booking</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Poppins,system-ui;
+  background:radial-gradient(circle at top,#1c1c1c,#000);
+  color:#fff;
+}
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 30px;
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+.brand{
+  font-size:22px;
+  font-weight:800;
+  letter-spacing:3px;
+  color:#C5A059;
+}
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:30px;
+}
+.hero{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px;
+}
+.card{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:24px;
+  padding:30px;
+  box-shadow:0 30px 80px rgba(0,0,0,.6);
+}
+h1{
+  font-size:42px;
+  margin:0;
+}
+.gold{color:#C5A059}
+p{opacity:.85;line-height:1.7}
+
+input,select,button{
+  width:100%;
+  padding:15px;
+  border-radius:14px;
+  border:none;
+  margin-top:12px;
+  background:#111;
+  color:#fff;
+  font-size:14px;
+}
+button{
+  background:#C5A059;
+  color:#000;
+  font-weight:800;
+  letter-spacing:2px;
+  cursor:pointer;
+}
+button:hover{opacity:.9}
+
+.slots{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(80px,1fr));
+  gap:10px;
+  margin-top:15px;
+}
+.slot{
+  padding:10px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.2);
+  text-align:center;
+  cursor:pointer;
+  font-size:13px;
+}
+.slot.active{
+  background:#C5A059;
+  color:#000;
+  font-weight:700;
+}
+.slot.booked{
+  opacity:.35;
+  pointer-events:none;
+}
+
+footer{
+  margin-top:60px;
+  padding:30px;
+  border-top:1px solid rgba(255,255,255,.1);
+  text-align:center;
+  font-size:13px;
+  opacity:.8;
+}
+
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr}
+}
+</style>
 </head>
+
 <body>
 
+<header>
+  <div class="brand">OMI SALON</div>
+  <div>Premium Luxury Salon</div>
+</header>
+
 <div class="container">
-  <h1>OMI SALON</h1>
-  <p>Premium Luxury Salon Experience</p>
+  <div class="hero">
 
-  <div class="card">
-    <input id="name" placeholder="तुमचं नाव">
-    <input id="phone" placeholder="मोबाईल नंबर">
-    
-    <select id="service">
-      <option value="">सेवा निवडा</option>
-      <option>Kes Cutting</option>
-      <option>Daadhi</option>
-      <option>Hair Color</option>
-      <option>Facial</option>
-    </select>
+    <!-- LEFT INFO -->
+    <div class="card">
+      <h1>Perfect <span class="gold">Look</span><br/>Awaits You</h1>
+      <p>
+        आम्ही तुम्हाला फक्त लुक नाही तर एक रॉयल अनुभव देतो.
+        अलाबाद, कोल्हापूर मधील सर्वात आधुनिक प्रीमियम सलून.
+      </p>
 
-    <input type="date" id="date">
+      <p>
+        📍 <b>Location:</b> Alabad, Kolhapur, Maharashtra<br/>
+        👑 <b>Owner:</b> Omkar Mane<br/>
+        📞 <b>Contact:</b> +91 91456 27957
+      </p>
+    </div>
 
-    <div id="slots"></div>
+    <!-- BOOKING -->
+    <div class="card">
+      <h2 class="gold">Book Appointment</h2>
 
-    <button onclick="book()">बुक करा</button>
-    <p id="status"></p>
+      <input id="name" placeholder="Full Name"/>
+      <input id="phone" placeholder="Mobile Number"/>
+
+      <select id="service">
+        <option value="">Select Service</option>
+        <option>Kes Cutting</option>
+        <option>Daadhi (Shaving)</option>
+        <option>Cutting + Daadhi</option>
+        <option>Hair Color</option>
+        <option>Facial</option>
+        <option>Massage</option>
+      </select>
+
+      <input type="date" id="date"/>
+
+      <div class="slots" id="slots"></div>
+
+      <button onclick="book()">CONFIRM BOOKING</button>
+      <p id="status"></p>
+    </div>
+
   </div>
 </div>
 
+<footer>
+  © 2026 OMI SALON. Luxury Defined.<br/>
+  Developed by <b>Sourabh</b>
+</footer>
+
+<!-- FIREBASE -->
 <script type="module">
-import { db, APP_ID } from './firebase.js';
-import { collection, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_DOMAIN",
+  projectId: "YOUR_PROJECT_ID"
+};
+
+const OWNER_NUMBER = "919145627957";
+const APP_ID = "omi-salon-gold-3d";
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+signInAnonymously(getAuth(app));
 
 let selectedTime = "";
 const slotsDiv = document.getElementById("slots");
 
-function renderSlots(booked={}) {
+function generateSlots(booked={}){
   slotsDiv.innerHTML="";
   for(let h=10;h<21;h++){
     for(let m of ["00","30"]){
-      let t=`${h}:${m}`;
-      let div=document.createElement("div");
-      div.className="slot";
-      div.innerText=t;
-      if(booked[t]) div.classList.add("booked");
-      div.onclick=()=>selectedTime=t;
-      slotsDiv.appendChild(div);
+      const t=`${h}:${m}`;
+      const d=document.createElement("div");
+      d.className="slot";
+      d.innerText=t;
+      if(booked[t]) d.classList.add("booked");
+      d.onclick=()=>{
+        document.querySelectorAll(".slot").forEach(s=>s.classList.remove("active"));
+        d.classList.add("active");
+        selectedTime=t;
+      };
+      slotsDiv.appendChild(d);
     }
   }
 }
 
-renderSlots();
+generateSlots();
 
-window.book = async () => {
-  if(!selectedTime) return alert("वेळ निवडा");
-  const date=document.getElementById("date").value;
-  const ref=doc(db,"artifacts",APP_ID,"public","data",`bookings_${date}`,selectedTime.replace(":",""));
-  await setDoc(ref,{
+date.onchange=()=>{
+  const q=collection(db,"artifacts",APP_ID,"public","data",`bookings_${date.value}`);
+  onSnapshot(q,snap=>{
+    const booked={};
+    snap.forEach(d=>booked[d.data().time]=true);
+    generateSlots(booked);
+  });
+};
+
+window.book = async ()=>{
+  if(!selectedTime) return alert("Select time");
+  const data={
     name:name.value,
     phone:phone.value,
     service:service.value,
+    date:date.value,
     time:selectedTime,
-    date
-  });
-  window.location.href=`https://wa.me/919145627957`;
+    ts:Date.now()
+  };
+
+  await setDoc(
+    doc(db,"artifacts",APP_ID,"public","data",`bookings_${date.value}`,selectedTime.replace(":","")),
+    data
+  );
+
+  // OWNER MSG
+  const ownerMsg =
+`नमस्कार *OMI SALON* (ओंकार माने)
+
+👤 ग्राहक: ${data.name}
+📞 मोबाईल: ${data.phone}
+📅 तारीख: ${data.date}
+⏰ वेळ: ${data.time}
+✂️ सेवा: ${data.service}
+
+कृपया बुकिंग नोंद घ्या.`;
+
+  // CUSTOMER MSG
+  const custMsg =
+`नमस्कार ${data.name},
+
+*OMI SALON* कडून तुमची appointment confirm झाली आहे ✅
+
+📅 ${data.date}
+⏰ ${data.time}
+✂️ ${data.service}
+
+वेळेवर या.
+धन्यवाद!
+– Omkar Mane`;
+
+  window.open(`https://wa.me/${OWNER_NUMBER}?text=${encodeURIComponent(ownerMsg)}`);
+  setTimeout(()=>{
+    window.open(`https://wa.me/91${data.phone}?text=${encodeURIComponent(custMsg)}`);
+  },800);
 };
 </script>
+
 </body>
-</html>
+  </html>
