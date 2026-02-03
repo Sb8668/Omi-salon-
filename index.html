@@ -3,191 +3,176 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OMI SALON | अपॉइंटमेंट बुकिंग</title>
+<title>OMI SALON | Premium Booking</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
 <style>
-*{box-sizing:border-box;font-family:'Poppins',sans-serif}
-body{
-  margin:0;
-  min-height:100vh;
-  background:linear-gradient(135deg,#0b0b0b,#1a1a1a);
-  color:#fff;
-}
-.container{
-  max-width:1100px;
-  margin:auto;
-  padding:20px;
-}
-.card{
-  background:rgba(255,255,255,0.05);
-  border-radius:22px;
-  padding:28px;
-  box-shadow:0 25px 60px rgba(0,0,0,0.6);
-}
-h1{
-  text-align:center;
-  color:#c5a059;
-  letter-spacing:4px;
-}
-.subtitle{
-  text-align:center;
-  color:#ccc;
-  margin-bottom:30px;
-}
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:30px;
-}
-@media(max-width:768px){
-  .grid{grid-template-columns:1fr}
-}
-label{
-  font-size:12px;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  color:#aaa;
-}
-input,select{
-  width:100%;
-  padding:14px;
-  border-radius:12px;
-  border:none;
-  outline:none;
-  margin-top:6px;
-  background:#111;
-  color:#fff;
-}
-button{
-  width:100%;
-  padding:16px;
-  margin-top:22px;
-  border:none;
-  border-radius:40px;
-  background:linear-gradient(135deg,#c5a059,#ffdd88);
-  color:#000;
-  font-weight:700;
-  letter-spacing:3px;
-  cursor:pointer;
-}
-button:hover{transform:scale(1.03)}
-.note{
-  font-size:11px;
-  color:#bbb;
-  margin-top:10px;
-}
-.footer{
-  text-align:center;
-  margin-top:40px;
-  font-size:12px;
-  color:#aaa;
+*{font-family:Poppins;margin:0;box-sizing:border-box}
+body{background:#0b0b0b;color:#fff}
+header{background:#000;padding:25px;border-bottom:1px solid #222}
+header h1{color:#d4af37;letter-spacing:4px}
+header p{color:#aaa;font-size:13px}
+footer{background:#000;padding:20px;text-align:center;color:#777;font-size:12px}
+
+.container{max-width:1200px;margin:auto;padding:25px}
+.card{background:#141414;border-radius:26px;padding:30px;box-shadow:0 30px 80px #000;margin-bottom:30px}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:30px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+
+label{font-size:12px;color:#aaa;text-transform:uppercase;letter-spacing:2px}
+input,select{width:100%;padding:14px;margin-top:6px;border:none;border-radius:14px;background:#000;color:#fff}
+button{padding:14px 26px;border:none;border-radius:40px;
+background:linear-gradient(135deg,#d4af37,#ffecb3);
+font-weight:700;cursor:pointer}
+
+.tokenBox{text-align:center;background:#000;padding:18px;border-radius:18px;margin-bottom:25px}
+
+.adminPanel{display:none}
+.adminGrid{display:grid;grid-template-columns:2fr 3fr;gap:20px}
+@media(max-width:900px){.adminGrid{grid-template-columns:1fr}}
+
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{padding:10px;border-bottom:1px solid #222;font-size:13px}
+.table th{color:#d4af37;text-align:left}
+
+.reminderBtn{
+padding:8px 14px;
+border-radius:20px;
+background:linear-gradient(135deg,#ffcc00,#ff9900);
+border:none;
+cursor:pointer;
+font-size:12px;
+font-weight:600;
 }
 </style>
 </head>
 
 <body>
 
+<header>
+  <h1>OMI SALON</h1>
+  <p>✂️ Premium Grooming | 🕘 सकाळी 9 ते रात्री 8</p>
+</header>
+
 <div class="container">
-  <div class="card">
 
-    <h1>OMI SALON</h1>
-    <div class="subtitle">
-      प्रीमियम हेअर & ग्रूमिंग अनुभव  
-      <br>🕙 सकाळी 10 ते रात्री 9 पर्यंत सुरू
-    </div>
-
-    <div class="grid">
-
-      <!-- LEFT INFO -->
-      <div>
-        <h3>आमच्याबद्दल</h3>
-        <p>
-          आम्ही फक्त केस कापत नाही,  
-          तर तुम्हाला एक रॉयल आणि प्रीमियम अनुभव देतो.
-        </p>
-        <p><b>📍 ठिकाण:</b> अलाबाद, कोल्हापूर</p>
-        <p><b>👑 मालक:</b> ओंकार माने</p>
-        <p><b>📞 संपर्क:</b> +91 91456 27957</p>
-        <p><b>⏰ वेळ:</b> सकाळी 10 ते रात्री 9</p>
-      </div>
-
-      <!-- BOOKING -->
-      <div>
-        <h3>अपॉइंटमेंट बुक करा</h3>
-
-        <label>पूर्ण नाव</label>
-        <input id="name" placeholder="तुमचे नाव">
-
-        <label>मोबाईल नंबर (91 सह)</label>
-        <input id="phone" placeholder="919XXXXXXXXX">
-
-        <label>सेवा निवडा</label>
-        <select id="service">
-          <option>केस कटिंग</option>
-          <option>दाढी (शेव्हिंग)</option>
-          <option>केस + दाढी</option>
-          <option>फेशियल</option>
-          <option>मसाज</option>
-        </select>
-
-        <label>तारीख</label>
-        <input type="date" id="date">
-
-        <label>वेळ</label>
-        <input type="time" id="time">
-
-        <button onclick="bookNow()">BOOK APPOINTMENT</button>
-
-        <div class="note">
-          WhatsApp उघडेल. कृपया <b>Send</b> बटण दाबा.
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="footer">
-    Developed by <b>Sourabh</b> © 2026 OMI SALON
-  </div>
+<div class="card">
+<div class="tokenBox">
+आज चालू टोकन नंबर
+<h2 id="liveToken">लोड होत आहे...</h2>
 </div>
 
+<div class="grid">
+<div>
+<p>📍 अलाबाद, कोल्हापूर</p>
+<p>📞 +91 91456 27957</p>
+</div>
+
+<div>
+<label>नाव</label><input id="name">
+<label>मोबाईल</label><input id="phone">
+<label>सेवा</label>
+<select id="service">
+<option>केस कटिंग</option>
+<option>दाढी</option>
+<option>केस + दाढी</option>
+</select>
+<label>तारीख</label><input type="date" id="date">
+<label>वेळ</label><select id="time"></select>
+<button onclick="book()">BOOK APPOINTMENT</button>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h3>🔐 Admin Dashboard</h3>
+
+<input id="pass" placeholder="Password">
+<button onclick="login()">LOGIN</button>
+
+<div class="adminPanel" id="adminPanel">
+<table class="table">
+<thead>
+<tr>
+<th>Token</th><th>नाव</th><th>फोन</th><th>वेळ</th><th>🔔</th>
+</tr>
+</thead>
+<tbody id="list"></tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+<footer>Developed by Sourabh © 2026</footer>
+
 <script>
-const OWNER = "919145627957";
+firebase.initializeApp({
+ apiKey:"AIzaSyAGu894r9r05lgFjdVC6OGM361oWUBvDD0",
+ authDomain:"omi-salon.firebaseapp.com",
+ projectId:"omi-salon"
+});
+const db=firebase.firestore();
+const OWNER="919145627957";
+const ADMIN_PASS="omi123";
 
-function bookNow(){
-  const name = document.getElementById("name").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const service = document.getElementById("service").value;
-  const date = document.getElementById("date").value;
-  const time = document.getElementById("time").value;
+const timeSel=document.getElementById("time");
+for(let h=9;h<=20;h++){
+ ["00","30"].forEach(m=>{
+  if(h==20&&m=="30")return;
+  let t=`${h}:${m}`;
+  timeSel.innerHTML+=`<option>${t}</option>`;
+ });
+}
 
-  if(!name || !phone || !date || !time){
-    alert("कृपया सर्व माहिती भरा");
-    return;
-  }
+function book(){
+ let n=name.value,p=phone.value,s=service.value,d=date.value,t=time.value;
+ if(!n||!p||!d)return alert("सर्व माहिती भरा");
 
-  const msg = 
-`नमस्कार *OMI SALON* ✂️
+ db.collection("bookings").add({n,p,s,d,t,token:Date.now()});
+ let msg=`नमस्कार OMI SALON मध्ये आपली अपॉइंटमेंट नोंदवली आहे.`;
+ window.open(`https://wa.me/${OWNER}?text=${encodeURIComponent(msg)}`);
+}
 
-मी अपॉइंटमेंट बुक केली आहे.
+function login(){
+ if(pass.value===ADMIN_PASS){
+  adminPanel.style.display="block";
+  db.collection("bookings").onSnapshot(s=>{
+   list.innerHTML="";
+   s.forEach(d=>{
+    let b=d.data();
+    let rmsg=`नमस्कार 😊
+आपली *OMI SALON* ✂️ अपॉइंटमेंट आठवण करून देत आहोत.
 
-👤 नाव: ${name}
-📞 मोबाईल: ${phone}
-✂️ सेवा: ${service}
-📅 तारीख: ${date}
-⏰ वेळ: ${time}
+📅 तारीख: ${b.d}
+⏰ वेळ: ${b.t}
 
-कृपया booking confirm करा.
-धन्यवाद 🙏`;
+⏳ वेळ:
+सकाळी 9 ते रात्री 8
 
-  window.open(
-    `https://wa.me/${OWNER}?text=${encodeURIComponent(msg)}`,
-    "_blank"
-  );
+– OMI SALON`;
+    list.innerHTML+=`
+<tr>
+<td>${b.token}</td>
+<td>${b.n}</td>
+<td>${b.p}</td>
+<td>${b.t}</td>
+<td>
+<button class="reminderBtn"
+onclick="window.open('https://wa.me/91${b.p}?text=${encodeURIComponent(rmsg)}')">
+Reminder
+</button>
+</td>
+</tr>`;
+   });
+  });
+ } else alert("Wrong password");
 }
 </script>
 
 </body>
-  </html>
+</html>
