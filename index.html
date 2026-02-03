@@ -3,50 +3,126 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OMI SALON | Premium Booking</title>
+<title>OMI SALON | Premium Appointment</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
 <style>
-*{font-family:Poppins;margin:0;box-sizing:border-box}
-body{background:#0b0b0b;color:#fff}
-header{background:#000;padding:25px;border-bottom:1px solid #222}
-header h1{color:#d4af37;letter-spacing:4px}
-header p{color:#aaa;font-size:13px}
-footer{background:#000;padding:20px;text-align:center;color:#777;font-size:12px}
+:root{
+--gold:#d4af37;
+--dark:#0c0c0c;
+--card:#151515;
+--muted:#999;
+}
+*{margin:0;box-sizing:border-box;font-family:Poppins}
+body{background:linear-gradient(180deg,#000,#0a0a0a);color:#fff}
 
-.container{max-width:1200px;margin:auto;padding:25px}
-.card{background:#141414;border-radius:26px;padding:30px;box-shadow:0 30px 80px #000;margin-bottom:30px}
+header{
+padding:30px;
+text-align:center;
+border-bottom:1px solid #222;
+background:rgba(0,0,0,.7);
+backdrop-filter:blur(10px)
+}
+header h1{color:var(--gold);letter-spacing:6px;font-size:34px}
+header p{font-size:13px;color:#aaa;margin-top:8px}
 
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:30px}
-@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.container{max-width:1200px;margin:auto;padding:30px}
 
-label{font-size:12px;color:#aaa;text-transform:uppercase;letter-spacing:2px}
-input,select{width:100%;padding:14px;margin-top:6px;border:none;border-radius:14px;background:#000;color:#fff}
-button{padding:14px 26px;border:none;border-radius:40px;
-background:linear-gradient(135deg,#d4af37,#ffecb3);
-font-weight:700;cursor:pointer}
+.hero{
+display:grid;
+grid-template-columns:1.2fr 1fr;
+gap:40px;
+align-items:center;
+margin-bottom:40px
+}
+@media(max-width:900px){.hero{grid-template-columns:1fr}}
 
-.tokenBox{text-align:center;background:#000;padding:18px;border-radius:18px;margin-bottom:25px}
+.heroText h2{font-size:42px;line-height:1.2}
+.heroText span{color:var(--gold)}
+.heroText p{color:#bbb;margin-top:15px;max-width:450px}
 
-.adminPanel{display:none}
-.adminGrid{display:grid;grid-template-columns:2fr 3fr;gap:20px}
-@media(max-width:900px){.adminGrid{grid-template-columns:1fr}}
+.card{
+background:linear-gradient(180deg,#181818,#111);
+border-radius:30px;
+padding:35px;
+box-shadow:0 40px 120px rgba(0,0,0,.8)
+}
 
-.table{width:100%;border-collapse:collapse}
-.table th,.table td{padding:10px;border-bottom:1px solid #222;font-size:13px}
-.table th{color:#d4af37;text-align:left}
+label{
+font-size:11px;
+letter-spacing:2px;
+text-transform:uppercase;
+color:#aaa
+}
+input,select{
+width:100%;
+padding:14px;
+margin-top:6px;
+margin-bottom:16px;
+border-radius:16px;
+border:1px solid #222;
+background:#000;
+color:#fff
+}
+button{
+width:100%;
+padding:16px;
+border-radius:40px;
+border:none;
+font-weight:700;
+letter-spacing:2px;
+cursor:pointer;
+background:linear-gradient(135deg,var(--gold),#fff1b8);
+color:#000
+}
+button:hover{transform:scale(1.03)}
 
-.reminderBtn{
-padding:8px 14px;
+.infoRow{display:flex;gap:20px;margin-top:20px;font-size:13px;color:#bbb}
+
+.tokenBox{
+background:#000;
+border-radius:20px;
+padding:18px;
+text-align:center;
+margin-bottom:25px;
+border:1px solid #222
+}
+.tokenBox h3{color:var(--gold)}
+
+.admin{
+margin-top:40px
+}
+.admin h3{margin-bottom:15px}
+.table{
+width:100%;
+border-collapse:collapse;
+font-size:13px
+}
+.table th,.table td{
+padding:12px;
+border-bottom:1px solid #222
+}
+.table th{color:var(--gold);text-align:left}
+
+.reminder{
+padding:6px 12px;
 border-radius:20px;
 background:linear-gradient(135deg,#ffcc00,#ff9900);
 border:none;
-cursor:pointer;
 font-size:12px;
-font-weight:600;
+cursor:pointer
+}
+
+footer{
+margin-top:60px;
+padding:25px;
+text-align:center;
+font-size:12px;
+color:#777;
+border-top:1px solid #222
 }
 </style>
 </head>
@@ -54,61 +130,74 @@ font-weight:600;
 <body>
 
 <header>
-  <h1>OMI SALON</h1>
-  <p>✂️ Premium Grooming | 🕘 सकाळी 9 ते रात्री 8</p>
+<h1>OMI SALON</h1>
+<p>Premium Grooming Experience • सकाळी 9 ते रात्री 8</p>
 </header>
 
 <div class="container">
 
+<div class="hero">
+<div class="heroText">
+<h2>Perfect <span>Look</span><br>Awaits You</h2>
+<p>फक्त केस कट नाही – एक Royal अनुभव.  
+अलाबाद, कोल्हापूर मधील Premium Salon.</p>
+<div class="infoRow">
+<div>📍 अलाबाद, कोल्हापूर</div>
+<div>📞 +91 91456 27957</div>
+</div>
+</div>
+
 <div class="card">
 <div class="tokenBox">
-आज चालू टोकन नंबर
-<h2 id="liveToken">लोड होत आहे...</h2>
+आजचा Live Token
+<h3 id="liveToken">Loading...</h3>
 </div>
 
-<div class="grid">
-<div>
-<p>📍 अलाबाद, कोल्हापूर</p>
-<p>📞 +91 91456 27957</p>
-</div>
+<label>नाव</label>
+<input id="name">
 
-<div>
-<label>नाव</label><input id="name">
-<label>मोबाईल</label><input id="phone">
+<label>मोबाईल नंबर</label>
+<input id="phone">
+
 <label>सेवा</label>
 <select id="service">
 <option>केस कटिंग</option>
 <option>दाढी</option>
 <option>केस + दाढी</option>
+<option>फेशियल</option>
 </select>
-<label>तारीख</label><input type="date" id="date">
-<label>वेळ</label><select id="time"></select>
+
+<label>तारीख</label>
+<input type="date" id="date">
+
+<label>वेळ (9:00 – 8:00)</label>
+<select id="time"></select>
+
 <button onclick="book()">BOOK APPOINTMENT</button>
 </div>
 </div>
-</div>
 
-<div class="card">
+<div class="admin card">
 <h3>🔐 Admin Dashboard</h3>
-
-<input id="pass" placeholder="Password">
+<input id="pass" placeholder="Admin Password">
 <button onclick="login()">LOGIN</button>
 
-<div class="adminPanel" id="adminPanel">
-<table class="table">
+<table class="table" id="adminTable" style="display:none">
 <thead>
 <tr>
 <th>Token</th><th>नाव</th><th>फोन</th><th>वेळ</th><th>🔔</th>
 </tr>
 </thead>
-<tbody id="list"></tbody>
+<tbody id="rows"></tbody>
 </table>
 </div>
-</div>
 
 </div>
 
-<footer>Developed by Sourabh © 2026</footer>
+<footer>
+Developed by <b>Sourabh</b> © 2026<br>
+OMI SALON – Luxury Defined
+</footer>
 
 <script>
 firebase.initializeApp({
@@ -124,55 +213,64 @@ const timeSel=document.getElementById("time");
 for(let h=9;h<=20;h++){
  ["00","30"].forEach(m=>{
   if(h==20&&m=="30")return;
-  let t=`${h}:${m}`;
-  timeSel.innerHTML+=`<option>${t}</option>`;
+  timeSel.innerHTML+=`<option>${h}:${m}</option>`;
  });
 }
 
+let token=1;
+db.collection("bookings").orderBy("token","desc").limit(1)
+.onSnapshot(s=>{
+ token=s.empty?1:s.docs[0].data().token+1;
+ liveToken.innerText=token;
+});
+
 function book(){
- let n=name.value,p=phone.value,s=service.value,d=date.value,t=time.value;
+ let n=name.value,p=phone.value,d=date.value,t=time.value,s=service.value;
  if(!n||!p||!d)return alert("सर्व माहिती भरा");
 
- db.collection("bookings").add({n,p,s,d,t,token:Date.now()});
- let msg=`नमस्कार OMI SALON मध्ये आपली अपॉइंटमेंट नोंदवली आहे.`;
+ db.collection("bookings").add({n,p,d,t,s,token});
+ let msg=`नमस्कार OMI SALON ✂️
+आपली अपॉइंटमेंट नोंदवली आहे.
+
+🔢 Token: ${token}
+📅 ${d}
+⏰ ${t}
+
+सकाळी 9 ते रात्री 8
+
+धन्यवाद 🙏`;
  window.open(`https://wa.me/${OWNER}?text=${encodeURIComponent(msg)}`);
 }
 
 function login(){
- if(pass.value===ADMIN_PASS){
-  adminPanel.style.display="block";
-  db.collection("bookings").onSnapshot(s=>{
-   list.innerHTML="";
-   s.forEach(d=>{
-    let b=d.data();
-    let rmsg=`नमस्कार 😊
-आपली *OMI SALON* ✂️ अपॉइंटमेंट आठवण करून देत आहोत.
+ if(pass.value!==ADMIN_PASS)return alert("Wrong password");
+ adminTable.style.display="table";
+ db.collection("bookings").onSnapshot(s=>{
+  rows.innerHTML="";
+  s.forEach(d=>{
+   let b=d.data();
+   let r=`नमस्कार 😊
+आपली OMI SALON अपॉइंटमेंटची आठवण.
 
-📅 तारीख: ${b.d}
-⏰ वेळ: ${b.t}
-
-⏳ वेळ:
-सकाळी 9 ते रात्री 8
-
-– OMI SALON`;
-    list.innerHTML+=`
+Token ${b.token}
+वेळ ${b.t}`;
+   rows.innerHTML+=`
 <tr>
 <td>${b.token}</td>
 <td>${b.n}</td>
 <td>${b.p}</td>
 <td>${b.t}</td>
 <td>
-<button class="reminderBtn"
-onclick="window.open('https://wa.me/91${b.p}?text=${encodeURIComponent(rmsg)}')">
+<button class="reminder"
+onclick="window.open('https://wa.me/91${b.p}?text=${encodeURIComponent(r)}')">
 Reminder
 </button>
 </td>
 </tr>`;
-   });
   });
- } else alert("Wrong password");
+ });
 }
 </script>
 
 </body>
-</html>
+  </html>
