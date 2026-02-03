@@ -1,59 +1,40 @@
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #111, #333);
-  color: #fff;
+body{
+  background:#0b0b0b;
+  color:#fff;
+  font-family:Arial;
 }
-
-.container {
-  max-width: 420px;
-  margin: 40px auto;
-  padding: 25px;
-  background: #000;
-  border-radius: 12px;
-  box-shadow: 0 0 25px rgba(197,160,89,0.4);
+.container{
+  max-width:420px;
+  margin:40px auto;
+  background:#000;
+  padding:25px;
+  border-radius:12px;
+  box-shadow:0 0 25px rgba(197,160,89,.4);
 }
-
-h1 {
-  text-align: center;
-  color: #C5A059;
-  margin-bottom: 5px;
+h1{
+  text-align:center;
+  color:#C5A059;
 }
-
-.subtitle {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 14px;
-  color: #ccc;
+.subtitle{
+  text-align:center;
+  color:#aaa;
 }
-
-input, select, button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 12px;
-  border-radius: 6px;
-  border: none;
-  font-size: 14px;
+input,select,button{
+  width:100%;
+  padding:12px;
+  margin-top:12px;
+  border-radius:6px;
+  border:none;
 }
-
-input, select {
-  background: #222;
-  color: #fff;
+input,select{background:#222;color:#fff;}
+button{
+  background:#C5A059;
+  font-weight:bold;
+  cursor:pointer;
 }
-
-button {
-  background: #C5A059;
-  color: #000;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-button:hover {
-  opacity: 0.9;
-}
-
-#status {
-  margin-top: 15px;
-  text-align: center;
-  font-size: 14px;
+.card{
+  background:#111;
+  padding:12px;
+  border-radius:8px;
+  margin-top:10px;
 }
