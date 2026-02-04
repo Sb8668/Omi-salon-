@@ -117,7 +117,7 @@
             <div class="flex justify-between items-center mb-6">
                 <div class="flex items-center gap-4">
                     <h1 class="text-2xl font-black uppercase italic">Dashboard</h1>
-                    <span id="cleaningStatus" class="text-[9px] text-amber-500 font-bold uppercase tracking-widest hidden">Cleaning old records...</span>
+                    <span id="cleaningStatus" class="text-[9px] text-amber-500 font-bold uppercase tracking-widest hidden">Updating...</span>
                 </div>
                 <button onclick="location.reload()" class="text-red-500 text-sm font-bold">Log Out</button>
             </div>
@@ -172,18 +172,19 @@
 
         lucide.createIcons();
 
-        // 6 AM Auto Cleanup Logic
+        // Safe 6 AM Auto Cleanup Logic
         window.cleanOldData = async () => {
             const cleaningEl = document.getElementById('cleaningStatus');
             const now = new Date();
             
-            // Check if it's past 6 AM today
-            const deleteThreshold = new Date();
-            deleteThreshold.setHours(6, 0, 0, 0);
+            // Set threshold to 6 AM of current day
+            const threshold = new Date();
+            threshold.setHours(6, 0, 0, 0);
 
-            // If it's before 6 AM, threshold should be 6 AM of previous day
-            if (now < deleteThreshold) {
-                deleteThreshold.setDate(deleteThreshold.getDate() - 1);
+            // Only delete if it's REALLY older than today's 6 AM
+            // If current time is before 6 AM, threshold should be 6 AM yesterday
+            if (now.getHours() < 6) {
+                threshold.setDate(threshold.getDate() - 1);
             }
 
             try {
@@ -194,8 +195,8 @@
                 snapshot.forEach((docSnap) => {
                     const data = docSnap.data();
                     const createdDate = new Date(data.createdAt);
-                    // Delete everything older than the most recent 6 AM trigger
-                    if (createdDate < deleteThreshold) {
+                    // Deleting only if created before the threshold 6 AM
+                    if (createdDate < threshold) {
                         deletePromises.push(deleteDoc(doc(db, collPath, docSnap.id)));
                     }
                 });
@@ -220,7 +221,7 @@
                 service: document.getElementById('custService').value,
                 date: document.getElementById('custDate').value,
                 time: document.getElementById('custTime').value,
-                createdAt: new Date().toISOString()
+                createdAt: new Date().toISOString() // Using standard ISO for reliable sorting
             };
 
             const hours = parseInt(data.time.split(':')[0]);
@@ -237,8 +238,8 @@
             const waUrl = `https://api.whatsapp.com/send?phone=${ownerNum}&text=${encodeURIComponent(text)}`;
 
             try {
-                window.open(waUrl, '_blank');
                 await addDoc(collection(db, collPath), data);
+                window.open(waUrl, '_blank');
                 btn.innerHTML = "यशस्वी!";
                 setTimeout(() => {
                     location.reload();
@@ -251,15 +252,20 @@
             }
         });
 
-        // Dashboard Data
+        // Dashboard Data - Fixed Snapshot Query
         window.loadBookings = () => {
-            window.cleanOldData(); // Run cleanup on dashboard load
-            const q = query(collection(db, collPath), orderBy("createdAt", "desc"));
-            onSnapshot(q, (snapshot) => {
+            window.cleanOldData(); 
+            // Simplified collection call to avoid index issues if they occur
+            onSnapshot(collection(db, collPath), (snapshot) => {
                 const tbody = document.getElementById('bookingsTableBody');
                 tbody.innerHTML = '';
-                snapshot.forEach((docSnap) => {
-                    const b = docSnap.data();
+                
+                // Sort in memory to ensure all data shows up regardless of index status
+                const bookings = [];
+                snapshot.forEach(docSnap => bookings.push({id: docSnap.id, ...docSnap.data()}));
+                bookings.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+                bookings.forEach((b) => {
                     const tr = document.createElement('tr');
                     tr.className = "hover:bg-white/5 transition-colors border-b border-white/5 last:border-0";
                     tr.innerHTML = `
@@ -276,7 +282,7 @@
                             <button onclick="sendRem('${b.name}','${b.phone}','${b.date}','${b.time}')" class="p-2 bg-green-500/10 text-green-500 rounded-lg hover:bg-green-500 hover:text-white transition-all">
                                 <i data-lucide="bell" class="w-3.5 h-3.5"></i>
                             </button>
-                            <button onclick="delBook('${docSnap.id}')" class="p-2 bg-red-500/10 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-all">
+                            <button onclick="delBook('${b.id}')" class="p-2 bg-red-500/10 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-all">
                                 <i data-lucide="trash" class="w-3.5 h-3.5"></i>
                             </button>
                         </td>
@@ -284,6 +290,8 @@
                     tbody.appendChild(tr);
                 });
                 lucide.createIcons();
+            }, (err) => {
+                console.error("Firestore Listen Error:", err);
             });
         };
 
@@ -311,4 +319,4 @@
         }
     </script>
 </body>
-            </html>
+    </html>
