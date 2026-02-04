@@ -1,48 +1,69 @@
 <!DOCTYPE html>
 <html>
-<head><title>Owner Panel</title></head>
+<head>
+<meta charset="UTF-8">
+<title>Owner Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{font-family:Arial;background:#f4f8fc}
+h2{text-align:center;color:#0b4da2}
+.box{
+ max-width:600px;margin:15px auto;background:white;padding:15px;
+ border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+button{margin:5px;padding:8px;background:#0b4da2;color:white;border:none;border-radius:8px;cursor:pointer}
+button:hover{background:#083b7a}
+</style>
+</head>
+
 <body>
-<h2>📋 Bookings</h2>
+<h2>📋 Appointments</h2>
 <div id="list"></div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, getDocs, updateDoc, doc } 
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
-const app = initializeApp({
+<script>
+firebase.initializeApp({
  apiKey:"AIzaSyAGu894r9r05lgFjdVC6OGM361oWUBvDD0",
  authDomain:"omi-salon.firebaseapp.com",
  projectId:"omi-salon"
 });
-const db = getFirestore(app);
+const auth=firebase.auth();
+const db=firebase.firestore();
 
-async function load(){
- const snap = await getDocs(collection(db,"bookings"));
- snap.forEach(d=>{
-  let b=d.data();
-  list.innerHTML+=`
-  <div>
-   <b>${b.name}</b> (${b.service})<br>
-   ${b.date} ${b.time}<br>
-   📞 ${b.phone}<br>
-   <button onclick="confirm('${d.id}','${b.phone}')">Confirm</button>
-   <button onclick="rem('${b.phone}')">Reminder</button>
-   <hr>
-  </div>`;
+auth.onAuthStateChanged(u=>{
+ if(!u){location.href="login.html";return;}
+ load();
+});
+
+function load(){
+ db.collection("bookings").orderBy("created","desc")
+ .onSnapshot(s=>{
+  list.innerHTML="";
+  s.forEach(d=>{
+   let b=d.data();
+   list.innerHTML+=`
+   <div class="box">
+    <b>${b.name}</b> (${b.service})<br>
+    ${b.date} ${b.time}<br>
+    📞 ${b.phone}<br>
+    Status: ${b.status}<br>
+    <button onclick="confirm('${d.id}','${b.phone}')">Confirm</button>
+    <button onclick="rem('${b.phone}')">Reminder</button>
+   </div>`;
+  });
  });
 }
 
-window.confirm = async (id,p)=>{
- await updateDoc(doc(db,"bookings",id),{status:"Confirmed"});
- window.open(`https://wa.me/91${p}?text=✅%20तुमची%20अपॉइंटमेंट%20Confirm%20झाली`);
-};
-
-window.rem = (p)=>{
- window.open(`https://wa.me/91${p}?text=⏰%20आज%20तुमची%20Salon%20अपॉइंटमेंट`);
-};
-
-load();
+function confirm(id,p){
+ db.collection("bookings").doc(id).update({status:"Confirmed"});
+ window.open(`https://wa.me/91${p}?text=✅%20आपली%20अपॉइंटमेंट%20Confirm%20झाली`);
+}
+function rem(p){
+ window.open(`https://wa.me/91${p}?text=⏰%20आज%20तुमची%20Salon%20Appointment`);
+}
 </script>
 </body>
 </html>
