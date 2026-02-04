@@ -1,63 +1,48 @@
 <!DOCTYPE html>
 <html>
-<head>
-<title>Owner Dashboard</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body{background:#f5e6d3;font-family:Arial}
-.card{
- max-width:520px;margin:20px auto;
- background:#fff;padding:20px;border-radius:15px;
- box-shadow:0 0 20px rgba(0,0,0,.3);
-}
-button{
- padding:10px 14px;border:none;border-radius:8px;
- color:white;margin:5px;
-}
-.confirm{background:green}
-.reminder{background:orange}
-</style>
-</head>
-
+<head><title>Owner Panel</title></head>
 <body>
-<div class="card">
-<h2>📋 Live Bookings</h2>
+<h2>📋 Bookings</h2>
 <div id="list"></div>
-</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, getDocs, updateDoc, doc } 
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-const app=initializeApp({
+const app = initializeApp({
  apiKey:"AIzaSyAGu894r9r05lgFjdVC6OGM361oWUBvDD0",
  authDomain:"omi-salon.firebaseapp.com",
  projectId:"omi-salon"
 });
-const db=getFirestore(app);
+const db = getFirestore(app);
 
-const snap=await getDocs(collection(db,"bookings"));
-snap.forEach(d=>{
- let b=d.data();
- list.innerHTML+=`
- <div>
- <b>${b.name}</b> (${b.service})<br>
- ${b.date} ${b.time}<br>
- 📞 ${b.phone}<br>
- Status: ${b.status}<br>
- <button class="confirm" onclick="confirm('${d.id}','${b.phone}')">Confirm</button>
- <button class="reminder" onclick="remind('${b.phone}')">Reminder</button>
- </div><hr>`;
-});
+async function load(){
+ const snap = await getDocs(collection(db,"bookings"));
+ snap.forEach(d=>{
+  let b=d.data();
+  list.innerHTML+=`
+  <div>
+   <b>${b.name}</b> (${b.service})<br>
+   ${b.date} ${b.time}<br>
+   📞 ${b.phone}<br>
+   <button onclick="confirm('${d.id}','${b.phone}')">Confirm</button>
+   <button onclick="rem('${b.phone}')">Reminder</button>
+   <hr>
+  </div>`;
+ });
+}
 
-window.confirm=async(id,p)=>{
+window.confirm = async (id,p)=>{
  await updateDoc(doc(db,"bookings",id),{status:"Confirmed"});
- window.open(`https://wa.me/91${p}?text=आपली%20अपॉइंटमेंट%20Confirm%20झाली%20आहे%20🙏`);
+ window.open(`https://wa.me/91${p}?text=✅%20तुमची%20अपॉइंटमेंट%20Confirm%20झाली`);
 };
-window.remind=(p)=>{
- window.open(`https://wa.me/91${p}?text=⏰%20आज%20तुमची%20अपॉइंटमेंट%20आहे`);
+
+window.rem = (p)=>{
+ window.open(`https://wa.me/91${p}?text=⏰%20आज%20तुमची%20Salon%20अपॉइंटमेंट`);
 };
+
+load();
 </script>
 </body>
 </html>
