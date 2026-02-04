@@ -104,7 +104,7 @@
                 </form>
             </div>
             
-            <!-- Footer Credits - Updated to Bold White -->
+            <!-- Footer Credits -->
             <div class="text-center mt-6 space-y-2">
                 <p class="text-amber-500 text-[10px] uppercase tracking-widest font-black">ओमी सलून • ओमकार माने</p>
                 <p class="text-white text-[10px] uppercase tracking-[0.15em] font-bold">Developed by Sourabh Bongarde</p>
@@ -172,28 +172,45 @@
 
         lucide.createIcons();
 
+        // 6 AM Auto Cleanup Logic
         window.cleanOldData = async () => {
             const cleaningEl = document.getElementById('cleaningStatus');
-            cleaningEl.classList.remove('hidden');
-            const thirtyDaysAgo = new Date();
-            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-            const limitStr = thirtyDaysAgo.toISOString();
+            const now = new Date();
+            
+            // Check if it's past 6 AM today
+            const deleteThreshold = new Date();
+            deleteThreshold.setHours(6, 0, 0, 0);
+
+            // If it's before 6 AM, threshold should be 6 AM of previous day
+            if (now < deleteThreshold) {
+                deleteThreshold.setDate(deleteThreshold.getDate() - 1);
+            }
 
             try {
+                cleaningEl.classList.remove('hidden');
                 const snapshot = await getDocs(collection(db, collPath));
                 const deletePromises = [];
+                
                 snapshot.forEach((docSnap) => {
-                    if (docSnap.data().createdAt < limitStr) {
+                    const data = docSnap.data();
+                    const createdDate = new Date(data.createdAt);
+                    // Delete everything older than the most recent 6 AM trigger
+                    if (createdDate < deleteThreshold) {
                         deletePromises.push(deleteDoc(doc(db, collPath, docSnap.id)));
                     }
                 });
-                await Promise.all(deletePromises);
+                
+                if (deletePromises.length > 0) {
+                    await Promise.all(deletePromises);
+                }
             } catch (err) {
                 console.error("Cleanup error:", err);
+            } finally {
+                cleaningEl.classList.add('hidden');
             }
-            cleaningEl.classList.add('hidden');
         };
 
+        // Booking Submit
         document.getElementById('bookingForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btnSubmit');
@@ -234,8 +251,9 @@
             }
         });
 
+        // Dashboard Data
         window.loadBookings = () => {
-            window.cleanOldData(); 
+            window.cleanOldData(); // Run cleanup on dashboard load
             const q = query(collection(db, collPath), orderBy("createdAt", "desc"));
             onSnapshot(q, (snapshot) => {
                 const tbody = document.getElementById('bookingsTableBody');
@@ -293,4 +311,4 @@
         }
     </script>
 </body>
-        </html>
+            </html>
