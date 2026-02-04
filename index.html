@@ -1,303 +1,147 @@
 <!DOCTYPE html>
 <html lang="mr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OMI SALON | Cloud Powered</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --gold: #d4af37;
-            --dark-bg: #0f172a;
-        }
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--dark-bg);
-            background-image: radial-gradient(circle at top right, #1e293b, #0f172a);
-            color: #f8fafc;
-            min-height: 100vh;
-        }
-        .gold-text { color: var(--gold); }
-        .glass {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .input-field {
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            color: white;
-            transition: all 0.3s;
-        }
-        .input-field:focus {
-            border-color: var(--gold);
-            outline: none;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #d4af37, #b8860b);
-            color: #000;
-            font-weight: 700;
-        }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-        .loading-spinner {
-            border: 3px solid rgba(255,255,255,.1);
-            border-top: 3px solid var(--gold);
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    </style>
+<meta charset="UTF-8">
+<title>Omkar Mane Salon | Appointment Booking</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Marathi&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:'Tiro Devanagari Marathi', serif;
+  background:linear-gradient(135deg,#3b1f0f,#8b4513);
+  color:#fff;
+}
+header{
+  text-align:center;
+  padding:30px;
+  animation:fadeIn 1.5s;
+}
+header h1{
+  font-size:32px;
+  color:#ffcc66;
+}
+header p{
+  opacity:0.9;
+}
+.container{
+  max-width:420px;
+  margin:auto;
+  background:#fff;
+  color:#000;
+  border-radius:20px;
+  padding:25px;
+  box-shadow:0 0 30px rgba(0,0,0,0.4);
+  animation:slideUp 1.2s;
+}
+label{
+  font-weight:bold;
+  margin-top:15px;
+  display:block;
+}
+input, select{
+  width:100%;
+  padding:12px;
+  margin-top:5px;
+  border-radius:10px;
+  border:1px solid #ccc;
+}
+button{
+  width:100%;
+  padding:15px;
+  margin-top:20px;
+  background:#8b4513;
+  color:white;
+  border:none;
+  border-radius:12px;
+  font-size:18px;
+  cursor:pointer;
+  transition:0.3s;
+}
+button:hover{
+  background:#5c2e0e;
+  transform:scale(1.05);
+}
+footer{
+  text-align:center;
+  margin:20px;
+  font-size:14px;
+  opacity:0.8;
+}
+
+@keyframes slideUp{
+  from{transform:translateY(60px);opacity:0;}
+  to{transform:translateY(0);opacity:1;}
+}
+@keyframes fadeIn{
+  from{opacity:0;}
+  to{opacity:1;}
+}
+</style>
 </head>
-<body class="pb-10">
 
-    <header class="py-8 text-center border-b border-white/10 glass mb-8">
-        <h1 class="text-4xl font-bold tracking-widest gold-text uppercase">OMI SALON</h1>
-        <p class="text-gray-400 mt-2 flex items-center justify-center gap-2 text-sm">
-            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-            Cloud Protected • कोल्हापूर
-        </p>
-    </header>
+<body>
 
-    <main class="container mx-auto px-4 max-w-2xl">
-        
-        <!-- Navigation Tabs -->
-        <div class="flex gap-2 mb-6">
-            <button onclick="showTab('book-tab')" id="btn-book-tab" class="flex-1 py-3 rounded-lg font-semibold glass border-gold/50 text-gold transition-all">
-                ✂️ बुकिंग
-            </button>
-            <button onclick="showTab('admin-tab')" id="btn-admin-tab" class="flex-1 py-3 rounded-lg font-semibold glass text-gray-400 transition-all">
-                🔐 ॲडमिन
-            </button>
-        </div>
+<header>
+  <h1>✂️ Omkar Mane Salon ✂️</h1>
+  <p>⏰ वेळ: सकाळी 9 ते रात्री 9</p>
+</header>
 
-        <!-- BOOKING SECTION -->
-        <div id="book-tab" class="tab-content active">
-            <div class="glass rounded-2xl p-6 shadow-2xl">
-                <h2 class="text-2xl font-bold mb-6 text-center">अपॉइंटमेंट बुक करा</h2>
-                
-                <div class="space-y-4">
-                    <input id="userName" type="text" placeholder="तुमचे पूर्ण नाव" class="w-full p-4 rounded-xl input-field">
-                    <input id="userPhone" type="tel" placeholder="मोबाईल नंबर (10 Digit)" class="w-full p-4 rounded-xl input-field">
+<div class="container">
+  <h2>📅 अपॉइंटमेंट बुक करा</h2>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <select id="userSvc" class="w-full p-4 rounded-xl input-field">
-                            <option value="">सेवा निवडा...</option>
-                            <option value="Hair Cut">Hair Cut (कटिंग)</option>
-                            <option value="Shaving">Shaving (दाढी)</option>
-                            <option value="Combo">Hair + Beard Combo</option>
-                            <option value="Facial">Facial / Massage</option>
-                        </select>
-                        <select id="userTime" class="w-full p-4 rounded-xl input-field">
-                            <!-- Slots from Firebase -->
-                        </select>
-                    </div>
+  <label>तुमचं नाव</label>
+  <input type="text" id="name" placeholder="नाव टाका">
 
-                    <button id="bookBtn" onclick="handleBooking()" class="w-full py-4 mt-4 rounded-xl btn-primary text-lg shadow-lg flex items-center justify-center gap-2">
-                        कन्फर्म करा (WhatsApp)
-                    </button>
-                </div>
-            </div>
-        </div>
+  <label>मोबाईल नंबर</label>
+  <input type="tel" id="phone" placeholder="10 अंकी नंबर">
 
-        <!-- ADMIN SECTION -->
-        <div id="admin-tab" class="tab-content">
-            <div id="admin-login-ui" class="glass rounded-2xl p-6">
-                <h2 class="text-xl font-bold mb-4">ॲडमिन लॉगिन</h2>
-                <input id="passInput" type="password" placeholder="Password टाका" class="w-full p-4 rounded-xl input-field mb-4">
-                <button onclick="checkAdmin()" class="w-full py-3 rounded-xl bg-white/10 hover:bg-white/20 font-bold transition">
-                    प्रवेश करा
-                </button>
-            </div>
+  <label>सेवा निवडा</label>
+  <select id="service">
+    <option>Hair Cutting</option>
+    <option>Haircutting & दाढी</option>
+    <option>Special दाढी</option>
+    <option>Facial</option>
+    <option>Head Massage</option>
+    <option>Hair Color</option>
+  </select>
 
-            <div id="admin-dash-ui" class="hidden space-y-4">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-2xl font-bold gold-text">आजची बुकिंग</h2>
-                    <button onclick="logout()" class="text-xs text-red-400 underline">Logout</button>
-                </div>
-                <div id="booking-list" class="space-y-3">
-                    <div class="flex justify-center py-10"><div class="loading-spinner"></div></div>
-                </div>
-            </div>
-        </div>
+  <label>तारीख</label>
+  <input type="date" id="date">
 
-    </main>
+  <label>वेळ</label>
+  <input type="time" id="time">
 
-    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 glass px-6 py-3 rounded-full text-sm font-medium transition-all opacity-0 translate-y-10 pointer-events-none z-50"></div>
+  <button onclick="book()">WhatsApp वर Booking पाठवा</button>
+</div>
 
-    <!-- Firebase SDKs -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+<footer>
+  Developed by <b>Sourabh</b> 💻
+</footer>
 
-        // Firebase Configuration
-        const firebaseConfig = JSON.parse(__firebase_config);
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'omi-salon-app';
+<script>
+function book(){
+  let name = document.getElementById("name").value;
+  let phone = document.getElementById("phone").value;
+  let service = document.getElementById("service").value;
+  let date = document.getElementById("date").value;
+  let time = document.getElementById("time").value;
 
-        let currentUser = null;
-        let allBookings = [];
+  let msg = `नमस्कार ओंकार माने सर,%0A
+नवीन अपॉइंटमेंट request:%0A
+👤 नाव: ${name}%0A
+📞 मोबाईल: ${phone}%0A
+✂️ सेवा: ${service}%0A
+📅 तारीख: ${date}%0A
+⏰ वेळ: ${time}%0A%0A
+कृपया Confirm / Reminder पाठवा.`;
 
-        // 1. Auth & Initial Load
-        async function init() {
-            try {
-                await signInAnonymously(auth);
-                onAuthStateChanged(auth, (user) => {
-                    currentUser = user;
-                    if (user) {
-                        listenToBookings();
-                    }
-                });
-            } catch (err) {
-                console.error("Auth Error", err);
-                showToast("Firebase connection failed");
-            }
-        }
+  let url = `https://wa.me/919145627957?text=${msg}`;
+  window.open(url,'_blank');
+}
+</script>
 
-        // 2. Listen to Cloud Data
-        function listenToBookings() {
-            const publicPath = collection(db, 'artifacts', appId, 'public', 'data', 'bookings');
-            
-            // Simple query (No orderBy to avoid index requirement)
-            onSnapshot(publicPath, (snapshot) => {
-                allBookings = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                // Sort in JS instead of Firestore query
-                allBookings.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-                
-                updateTimeSlots();
-                if (document.getElementById("admin-dash-ui").classList.contains("active") || true) {
-                    renderAdminList();
-                }
-            }, (error) => {
-                console.error("Firestore Error", error);
-            });
-        }
-
-        // 3. UI logic
-        window.updateTimeSlots = () => {
-            const select = document.getElementById("userTime");
-            if(!select) return;
-            select.innerHTML = `<option value="">वेळ निवडा</option>`;
-            
-            const bookedTimes = allBookings.map(b => b.time);
-
-            for (let h = 9; h <= 19; h++) {
-                const timeStr = `${h}:00 ${h >= 12 ? 'PM' : 'AM'}`;
-                const val = `${h}:00`;
-                const isBooked = bookedTimes.includes(val);
-                
-                const opt = document.createElement("option");
-                opt.value = val;
-                opt.textContent = isBooked ? `❌ ${timeStr} (Full)` : `✅ ${timeStr}`;
-                if (isBooked) opt.disabled = true;
-                select.appendChild(opt);
-            }
-        };
-
-        window.handleBooking = async () => {
-            if (!currentUser) return showToast("कनेक्शन सुरू होत आहे, थांबा...");
-
-            const name = document.getElementById("userName").value.trim();
-            const phone = document.getElementById("userPhone").value.trim();
-            const svc = document.getElementById("userSvc").value;
-            const time = document.getElementById("userTime").value;
-
-            if (!name || phone.length < 10 || !svc || !time) {
-                return showToast("कृपया सर्व योग्य माहिती भरा!");
-            }
-
-            const btn = document.getElementById("bookBtn");
-            btn.disabled = true;
-            btn.innerHTML = `<div class="loading-spinner"></div> सेव्ह होत आहे...`;
-
-            try {
-                const token = Math.floor(Math.random() * 900) + 100;
-                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'bookings'), {
-                    name, phone, svc, time, token,
-                    createdAt: serverTimestamp(),
-                    userId: currentUser.uid
-                });
-
-                const waMsg = `*OMI SALON - NEW APPOINTMENT*%0A%0A👤 नाव: ${name}%0A📞 मोबाईल: ${phone}%0A💈 सेवा: ${svc}%0A⏰ वेळ: ${time}%0A🎟️ टोकन: #${token}`;
-                window.location.href = `https://wa.me/919145627957?text=${waMsg}`;
-            } catch (err) {
-                showToast("Booking Error: " + err.message);
-                btn.disabled = false;
-                btn.innerText = "कन्फर्म करा (WhatsApp)";
-            }
-        };
-
-        window.renderAdminList = () => {
-            const listContainer = document.getElementById("booking-list");
-            if (!listContainer) return;
-
-            if (allBookings.length === 0) {
-                listContainer.innerHTML = `<p class="text-center text-gray-500 py-10">अद्याप बुकिंग नाही.</p>`;
-                return;
-            }
-
-            listContainer.innerHTML = allBookings.map(b => `
-                <div class="glass p-4 rounded-xl border-l-4 border-gold flex justify-between items-center animate-in slide-in-from-bottom-2 duration-300">
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <span class="text-[10px] bg-gold/20 text-gold px-2 rounded font-bold">#${b.token}</span>
-                            <h4 class="font-bold text-white">${b.name}</h4>
-                        </div>
-                        <p class="text-xs text-gray-400 mt-1">${b.svc} • ${b.time}</p>
-                    </div>
-                    <button onclick="window.sendReminder('${b.name}', '${b.phone}', '${b.time}')" class="p-2 bg-green-500/20 text-green-400 rounded-lg text-xs font-semibold">
-                        🔔 Remind
-                    </button>
-                </div>
-            `).join('');
-        };
-
-        window.sendReminder = (n, p, t) => {
-            const msg = `नमस्कार ${n}, *OMI SALON* कडून आठवण: तुमची अपॉइंटमेंट *${t}* ला आहे. कृपया वेळेवर या.`;
-            window.open(`https://wa.me/91${p}?text=${encodeURIComponent(msg)}`);
-        };
-
-        // UI Tabs & Auth
-        window.showTab = (tabId) => {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            const isBook = tabId === 'book-tab';
-            document.getElementById('btn-book-tab').className = isBook ? 'flex-1 py-3 rounded-lg font-semibold glass border-gold/50 text-gold' : 'flex-1 py-3 rounded-lg font-semibold glass text-gray-400';
-            document.getElementById('btn-admin-tab').className = !isBook ? 'flex-1 py-3 rounded-lg font-semibold glass border-gold/50 text-gold' : 'flex-1 py-3 rounded-lg font-semibold glass text-gray-400';
-        };
-
-        window.checkAdmin = () => {
-            if (document.getElementById("passInput").value === "omi123") {
-                document.getElementById("admin-login-ui").classList.add("hidden");
-                document.getElementById("admin-dash-ui").classList.remove("hidden");
-                renderAdminList();
-            } else { showToast("चुकीचा पासवर्ड!"); }
-        };
-
-        window.logout = () => {
-            document.getElementById("admin-login-ui").classList.remove("hidden");
-            document.getElementById("admin-dash-ui").classList.add("hidden");
-            document.getElementById("passInput").value = "";
-        };
-
-        function showToast(msg) {
-            const t = document.getElementById("toast");
-            t.textContent = msg;
-            t.style.opacity = "1";
-            t.style.transform = "translate(-50%, 0)";
-            setTimeout(() => { t.style.opacity = "0"; t.style.transform = "translate(-50%, 40px)"; }, 3000);
-        }
-
-        init();
-    </script>
 </body>
 </html>
-
