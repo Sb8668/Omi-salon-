@@ -103,7 +103,13 @@
                     </button>
                 </form>
             </div>
-            <p class="text-center text-gray-700 text-[10px] mt-6 uppercase tracking-widest font-bold">ओमी सलून • ओमकार माने</p>
+            
+            <!-- Footer Credits - Updated to Bold White -->
+            <div class="text-center mt-6 space-y-2">
+                <p class="text-amber-500 text-[10px] uppercase tracking-widest font-black">ओमी सलून • ओमकार माने</p>
+                <p class="text-white text-[10px] uppercase tracking-[0.15em] font-bold">Developed by Sourabh Bongarde</p>
+                <p class="text-white/60 text-[9px] font-medium tracking-wide">© All Rights Reserved by Omi Salon</p>
+            </div>
         </div>
 
         <!-- Owner Dashboard -->
@@ -166,7 +172,6 @@
 
         lucide.createIcons();
 
-        // Data Cleanup Logic (30 days) - Optimized
         window.cleanOldData = async () => {
             const cleaningEl = document.getElementById('cleaningStatus');
             cleaningEl.classList.remove('hidden');
@@ -189,7 +194,6 @@
             cleaningEl.classList.add('hidden');
         };
 
-        // Booking Submit - FAST VERSION
         document.getElementById('bookingForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btnSubmit');
@@ -202,7 +206,6 @@
                 createdAt: new Date().toISOString()
             };
 
-            // Time Validation
             const hours = parseInt(data.time.split(':')[0]);
             if (hours < 9 || hours >= 21) {
                 alert("कृपया सकाळी ९ ते रात्री ९ दरम्यानची वेळ निवडा.");
@@ -212,19 +215,13 @@
             btn.disabled = true;
             btn.innerHTML = "प्रक्रिया सुरू आहे...";
 
-            // 1. Prepare WhatsApp URL
             const ownerNum = "919145627957";
             const text = `नमस्कार ओमी सलून! ✂️\n\nमी अपॉइंटमेंट बुक केली आहे:\n\nनाव: ${data.name}\nसेवा: ${data.service}\nतारीख: ${data.date}\nवेळ: ${data.time}\nनंबर: ${data.phone}\n\nकृपया बुकिंग कन्फर्म करा. धन्यवाद!`;
             const waUrl = `https://api.whatsapp.com/send?phone=${ownerNum}&text=${encodeURIComponent(text)}`;
 
-            // 2. Parallel Execution for Speed
             try {
-                // Open WhatsApp immediately without waiting for DB to finish
                 window.open(waUrl, '_blank');
-                
-                // Save to DB in background
                 await addDoc(collection(db, collPath), data);
-                
                 btn.innerHTML = "यशस्वी!";
                 setTimeout(() => {
                     location.reload();
@@ -237,9 +234,8 @@
             }
         });
 
-        // Dashboard Data
         window.loadBookings = () => {
-            window.cleanOldData(); // Run cleanup
+            window.cleanOldData(); 
             const q = query(collection(db, collPath), orderBy("createdAt", "desc"));
             onSnapshot(q, (snapshot) => {
                 const tbody = document.getElementById('bookingsTableBody');
@@ -297,4 +293,4 @@
         }
     </script>
 </body>
-                                 </html>
+        </html>
