@@ -1,18 +1,47 @@
 <!DOCTYPE html>
 <html>
-<head><title>Owner Login</title></head>
-<body style="text-align:center">
-<h2>🔐 Owner Login</h2>
-<input id="pass" type="password" placeholder="Password"><br><br>
+<head>
+<meta charset="UTF-8">
+<title>Owner Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{background:#eef3f9;font-family:Arial}
+.card{
+ max-width:360px;margin:100px auto;background:white;
+ padding:25px;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
+h3{text-align:center;color:#0b4da2}
+input,button{
+ width:100%;padding:12px;margin-top:10px;border-radius:8px;
+}
+button{background:#0b4da2;color:white;border:none;cursor:pointer;}
+button:hover{background:#083b7a;}
+</style>
+</head>
+
+<body>
+<div class="card">
+<h3>🔐 Owner Login</h3>
+<input id="email" placeholder="Email">
+<input id="pass" type="password" placeholder="Password">
 <button onclick="login()">Login</button>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
 <script>
+firebase.initializeApp({
+ apiKey:"AIzaSyAGu894r9r05lgFjdVC6OGM361oWUBvDD0",
+ authDomain:"omi-salon.firebaseapp.com",
+ projectId:"omi-salon"
+});
+const auth=firebase.auth();
+
 function login(){
- if(pass.value==="1234"){
-  location.href="owner.html";
- }else{
-  alert("Wrong password");
- }
+ auth.signInWithEmailAndPassword(email.value,pass.value)
+ .then(()=>location.href="owner.html")
+ .catch(e=>alert(e.message));
 }
 </script>
 </body>
