@@ -3,39 +3,135 @@
 <head>
 <meta charset="UTF-8">
 <title>Omkar Mane Salon</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <style>
 body{
- font-family:sans-serif;
- background:#fdf6ef;
+ margin:0;
+ font-family:Arial, sans-serif;
+ background:#f4f8fc;
+ color:#333;
 }
-.box{
- max-width:420px;
+header{
+ background:#0b4da2;
+ color:white;
+ padding:20px;
+ text-align:center;
+}
+header h1{margin:0;font-size:28px}
+header p{margin:5px 0;font-size:16px;opacity:0.9}
+.container{
+ max-width:1000px;
  margin:auto;
+ padding:20px;
+}
+.card{
  background:white;
  padding:20px;
- border-radius:15px;
- box-shadow:0 0 20px rgba(0,0,0,.1);
+ border-radius:14px;
+ box-shadow:0 10px 30px rgba(0,0,0,.1);
+ margin-bottom:30px;
 }
-h1{text-align:center;color:#7a1f1f;}
-button{
+h2{color:#0b4da2}
+input,select{
  width:100%;
  padding:12px;
- background:#7a1f1f;
+ margin:8px 0;
+ border-radius:8px;
+ border:1px solid #ccc;
+}
+button{
+ width:100%;
+ padding:14px;
+ background:#0b4da2;
  color:white;
  border:none;
  border-radius:10px;
  font-size:16px;
+ cursor:pointer;
 }
+button:hover{background:#083b7a}
+.owner-box{
+ text-align:center;
+ margin-top:30px;
+ padding-top:20px;
+ border-top:2px dashed #0b4da2;
+}
+.owner-box a{
+ display:inline-block;
+ padding:12px 24px;
+ background:#000;
+ color:white;
+ border-radius:10px;
+ text-decoration:none;
+}
+.grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+ gap:20px;
+}
+.grid img{
+ width:100%;
+ border-radius:12px;
+}
+footer{
+ background:linear-gradient(135deg,#0b4da2,#083b7a);
+ color:white;
+ margin-top:60px;
+ font-family:Arial, sans-serif;
+}
+.footer-container{
+ max-width:1100px;
+ margin:auto;
+ padding:40px 20px;
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+ gap:30px;
+ align-items:center;
+}
+.footer-brand h3{margin:0;font-size:22px;letter-spacing:1px;}
+.footer-brand p{margin-top:6px;opacity:0.85;}
+.footer-info p{margin:6px 0;font-size:14px;opacity:0.9;}
+.footer-credit{text-align:right;}
+.footer-credit span{font-weight:bold;color:#ffd700;}
+.footer-bottom{text-align:center;padding:12px;background:rgba(0,0,0,0.25);font-size:13px;}
 </style>
 </head>
 
 <body>
-<div class="box">
-<h1>🪔 Omkar Mane Salon</h1>
 
-<input id="name" placeholder="तुमचं नाव"><br><br>
-<input id="phone" placeholder="मोबाईल नंबर"><br><br>
+<header>
+ <h1>Omkar Mane Salon</h1>
+ <p>Premium Hair & Grooming Studio | 9 AM – 9 PM</p>
+</header>
 
+<div class="container">
+
+<!-- ABOUT -->
+<div class="card">
+<h2>आमच्याबद्दल</h2>
+<p>
+Omkar Mane Salon मध्ये आम्ही आधुनिक grooming services देतो.  
+अनुभवी staff, स्वच्छता, आणि premium products वापरून सर्वोत्तम सेवा.
+</p>
+</div>
+
+<!-- GALLERY -->
+<div class="card">
+<h2>Gallery</h2>
+<div class="grid">
+<img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70">
+<img src="https://images.unsplash.com/photo-1605497788044-5a32c7078486">
+<img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a">
+</div>
+</div>
+
+<!-- BOOKING -->
+<div class="card">
+<h2>📅 Appointment Booking</h2>
+
+<input id="name" placeholder="तुमचं नाव">
+<input id="phone" placeholder="मोबाईल नंबर">
 <select id="service">
 <option>Hair Cutting</option>
 <option>Dadhi Cutting</option>
@@ -43,36 +139,59 @@ button{
 <option>Facial</option>
 <option>Head Massage</option>
 <option>Hair Color</option>
-</select><br><br>
+</select>
+<input type="date" id="date">
+<input type="time" id="time">
+<button onclick="book()">Appointment Book करा</button>
 
-<input type="date" id="date"><br><br>
-<input type="time" id="time"><br><br>
-
-<button onclick="book()">अपॉइंटमेंट बुक करा</button>
-
-<p style="text-align:center;margin-top:15px">
+<!-- OWNER LOGIN -->
+<div class="owner-box">
+<p>👑 Salon Owner Only</p>
 <a href="login.html">🔐 Owner Login</a>
-</p>
+</div>
+</div>
 </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+<!-- FOOTER -->
+<footer class="premium-footer">
+<div class="footer-container">
+  <div class="footer-brand">
+    <h3>Omkar Mane Salon</h3>
+    <p>Premium Hair • Grooming • Style</p>
+  </div>
+  <div class="footer-info">
+    <p>🕘 Working Hours: 9:00 AM – 9:00 PM</p>
+    <p>📍 Quality Grooming | Trusted Service</p>
+  </div>
+  <div class="footer-credit">
+    <p>Developed by <span>Sourabh B</span></p>
+  </div>
+</div>
+<div class="footer-bottom">
+ © <span id="year"></span> Omkar Mane Salon. All Rights Reserved.
+</div>
+</footer>
+<script>document.getElementById("year").innerText=new Date().getFullYear();</script>
 
-const app = initializeApp({
- apiKey: "AIzaSyAGu894r9r05lgFjdVC6OGM361oWUBvDD0",
- authDomain: "omi-salon.firebaseapp.com",
- projectId: "omi-salon"
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script>
+firebase.initializeApp({
+ apiKey:"AIzaSyAGu894r9r05lgFjdVC6OGM361oWUBvDD0",
+ authDomain:"omi-salon.firebaseapp.com",
+ projectId:"omi-salon"
 });
-const db = getFirestore(app);
+const db=firebase.firestore();
 
-window.book = async function(){
- if(!name.value || !phone.value){
-   alert("संपूर्ण माहिती भरा");
-   return;
+function book(){
+ if(!name.value||!phone.value){
+  alert("संपूर्ण माहिती भरा"); return;
  }
+ const msg=`नमस्कार Omkar Mane Salon,\nमाझी अपॉइंटमेंट बुक करायची आहे.\n\nनाव: ${name.value}\nService: ${service.value}\nDate: ${date.value} ${time.value}`;
+ window.location.href=`https://wa.me/919145627957?text=${encodeURIComponent(msg)}`;
 
- await addDoc(collection(db,"bookings"),{
+ db.collection("bookings").add({
   name:name.value,
   phone:phone.value,
   service:service.value,
@@ -81,16 +200,8 @@ window.book = async function(){
   status:"Pending",
   created:new Date()
  });
-
- // ✅ CUSTOMER WHATSAPP OPEN
- const msg = `नमस्कार Omkar Mane Salon,%0A
- माझी अपॉइंटमेंट बुक झाली आहे.%0A
- नाव: ${name.value}%0A
- Service: ${service.value}%0A
- Date: ${date.value} ${time.value}`;
-
- window.open(`https://wa.me/919145627957?text=${msg}`);
-};
+}
 </script>
+
 </body>
- </html>
+</html>
