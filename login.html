@@ -1,48 +1,19 @@
 <!DOCTYPE html>
 <html>
-<head>
-<title>Owner Login</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body{background:#3b1f0f;font-family:Arial}
-.box{
- max-width:350px;margin:100px auto;
- background:#fff;padding:25px;border-radius:15px;
-}
-button{
- width:100%;padding:12px;
- background:#8b4513;color:white;
- border:none;border-radius:10px;
-}
-input{width:100%;padding:10px;margin:10px 0}
-</style>
-</head>
-
-<body>
-<div class="box">
+<head><title>Owner Login</title></head>
+<body style="text-align:center">
 <h2>🔐 Owner Login</h2>
-<input id="email" placeholder="Email">
-<input id="pass" type="password" placeholder="Password">
+<input id="pass" type="password" placeholder="Password"><br><br>
 <button onclick="login()">Login</button>
-</div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword } 
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-const app=initializeApp({
- apiKey:"AIzaSyAGu894r9r05lgFjdVC6OGM361oWUBvDD0",
- authDomain:"omi-salon.firebaseapp.com",
-});
-
-const auth=getAuth(app);
-
-window.login=()=>{
- signInWithEmailAndPassword(auth,email.value,pass.value)
- .then(()=>location.href="owner.html")
- .catch(()=>alert("❌ Login Failed"));
-};
+<script>
+function login(){
+ if(pass.value==="1234"){
+  location.href="owner.html";
+ }else{
+  alert("Wrong password");
+ }
+}
 </script>
 </body>
 </html>
